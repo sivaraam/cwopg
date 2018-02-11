@@ -1,0 +1,24 @@
+{
+  "name": "customized_offline_package_generator",
+  "version": "0.0.1",
+  "description": "An application that generates offline packages of Wikipedia articles of a specific topic. The generated packages are in the ZIM file format.",
+  "main": "NA",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivaraam/cwopg.git"
+  },
+  "keywords": [
+    "js",
+    "wikipedia",
+    "zim"
+  ],
+  "author": "Kaartic Sivaraam",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sivaraam/cwopg/issues"
+  },
+  "homepage": "https://github.com/sivaraam/cwopg#readme"
+}
