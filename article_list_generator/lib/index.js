@@ -15,32 +15,43 @@
   * program to run successfully.
   */
 const category_list_file = "../categoryList"
+const article_list_file = "../articleList"
 
 /**
   * The library required for manipulating HTTP GET requests
   * and it's response.
   */
 const request = require('request')
+const fs = require('fs');
 
-const petscan_url = "https://petscan.wmflabs.org/"
+const petscan_url = 'https://petscan.wmflabs.org/'
 
 /**
   * Get the PetScan parameters that don't change often.
   */
 const petscan_params = require('../config/article_list_generator.json')
 
-petscan_params.categories="Sudoku"
+petscan_params.categories='Sudoku'
 
-function generate_pacakage_list(petscan_json_response) {
+function generate_article_list(petscan_json_response) {
 	const petscan_response = JSON.parse(petscan_json_response)
 	const articles_object = petscan_response['*'][0].a['*']
-	const articles = []
+	const articles = new Array()
 
-	for (var curr=0; curr<articles.length; curr++) {
-		articles.push(articles[curr].title)
+	for (var curr=0; curr<articles_object.length; curr++) {
+		articles.push(articles_object[curr].title)
 	}
 
 	return articles
+}
+
+function write_article_list(articles) {
+	const article_write_stream = fs.createWriteStream(article_list_file)
+
+	for (var article_index=0; article_index<articles.length; article_index++) {
+		console.log('Writing', articles[article_index])
+		article_write_stream.write(articles[article_index]+"\n")
+	}
 }
 
 request.get({
@@ -49,8 +60,9 @@ request.get({
 }, function (error, response, body) {
 	if (error != null) {
 		console.log('error:', error); // Print the error if one occurred
-		throw new Error("Something went badly wrong!");
+		throw new Error('Something went badly wrong!');
 	}
-  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  console.log(generate_pacakage_list(body))
+	console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	const articles = generate_article_list(body)
+	write_article_list(articles)
 });
