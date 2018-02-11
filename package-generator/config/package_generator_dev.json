@@ -1,0 +1,10 @@
+{
+  "mwUrl": "https://en.wikipedia.org/",
+  "adminEmail": "kaarticsivaraam91196@gmail.com",
+  "verbose": true,
+  "minifyHtml": true,
+  "creator": "Kaartic Sivaraam",
+  "tmpDirectory": "../mwoffliner-tmp-dir/tmp",
+  "cacheDirectory": "../mwoffliner-tmp-dir/cache",
+  "outputDirectory": "../mwoffliner-output"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "customized-offline-package-generator",
+  "version": "0.0.1",
+  "description": "An application that generates offline packages of Wikipedia articles of a specific topic. The packages would typically be ZIM files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-zim": "node lib/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "keywords": [
+    "zim",
+    "wikipedia",
+    "offline"
+  ],
+  "author": "Kaartic Sivaraam",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "mwoffliner": "^1.3.7"
+  }
+}
