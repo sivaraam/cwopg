@@ -4,7 +4,5 @@
   "verbose": true,
   "minifyHtml": true,
   "creator": "Kaartic Sivaraam",
-  "tmpDirectory": "../mwoffliner-tmp-dir/tmp",
-  "cacheDirectory": "../mwoffliner-tmp-dir/cache",
-  "outputDirectory": "../mwoffliner-output"
+  "outputDirectory": "../mwoffliner_output"
 }
