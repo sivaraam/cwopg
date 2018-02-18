@@ -31,7 +31,20 @@ const petscan_url = 'https://petscan.wmflabs.org/'
   */
 const petscan_params = require('../config/article_list_generator.json')
 
-petscan_params.categories='Sudoku'
+/**
+  * Reads the category list file and returns the list of categories in it.
+  *
+  * Assumes that the file exists.
+  *
+  * Returns an array in which each element represents a category.
+  */
+function read_category_list(category_list_file) {
+	const categories = fs.readFileSync(category_list_file, 'utf-8')
+			     .split('\n')
+			     .filter(Boolean)  // to ignore empty lines
+
+	return categories
+}
 
 function generate_article_list(petscan_json_response) {
 	const petscan_response = JSON.parse(petscan_json_response)
@@ -53,6 +66,10 @@ function write_article_list(articles) {
 		article_write_stream.write(articles[article_index]+"\n")
 	}
 }
+
+const categories = read_category_list(category_list_file)
+
+petscan_params.categories = categories.join('\n')
 
 request.get({
 	url: petscan_url,
