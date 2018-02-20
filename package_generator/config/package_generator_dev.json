@@ -4,5 +4,5 @@
   "verbose": true,
   "minifyHtml": true,
   "creator": "Kaartic Sivaraam",
-  "outputDirectory": "../mwoffliner_output"
+  "outputDirectory": "../output"
 }
