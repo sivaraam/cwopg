@@ -36,13 +36,14 @@ public class TreeExample1 {
     }
     private static void search(Node node,String key)
     {
+         key = key.toLowerCase();
          //System.out.println(node.getData());
          int j=-1;
          Node p;
          String from_user;
-         if(node.getData().contains(key))
+         if(node.getData().toLowerCase().contains(key))
          {
-               ans=node.getData();
+               ans=node.getData().toLowerCase();
                ans_parent=node.getParent();
                answer_parent.add(ans_parent);
                if(!answer.contains(ans))
@@ -56,7 +57,7 @@ public class TreeExample1 {
                 p=answer_parent.get(j);
                 System.out.println("Which?"+p.getData()+" or "+ans_parent.getData()+"    (Type the first letter)");
                 from_user=s.next();
-                if(ans_parent.getData().contains(from_user))
+                if(ans_parent.getData().toLowerCase().contains(from_user.toLowerCase()))
                 {
                     print_from_root(ans_parent);
                     System.out.print(ans);
@@ -79,8 +80,10 @@ public class TreeExample1 {
                    print_to_file(hec);
                }
          }
-        else
-             node.getChildren().forEach(each ->search(each,key));
+        else {
+            final String lambdaString = new String(key);
+            node.getChildren().forEach(each ->search(each, lambdaString));
+        }
     }
     private static void print_to_file(List<String> got)
     {
