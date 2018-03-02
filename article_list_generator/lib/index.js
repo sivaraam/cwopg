@@ -55,8 +55,7 @@ function read_category_list(category_list_file) {
 
 	// sanity check
 	if (categories == null) {
-		console.error('Categories could not be read!')
-		return null
+		e.fatal_error('Categories could not be read!')
 	}
 
 	console.log(`Successfully read ${categories.length} categories.`)
@@ -109,8 +108,7 @@ try {
 	fs.statSync(category_list_file)
 } catch(error) {
 	if(error.code === 'ENOENT') {
-		console.error(`Category file '${category_list_file}' does not exist.`)
-		return
+		e.fatal_error(`Category file '${category_list_file}' does not exist.`)
 	}
 
 	throw err
@@ -118,9 +116,8 @@ try {
 
 const categories = read_category_list(category_list_file)
 
-if (categories == null || categories.length === 0) {
-	console.error('No categories found.')
-	return
+if (categories.length === 0) {
+	e.fatal_error('No categories found.')
 }
 
 petscan_params.categories = categories.join('\n')
@@ -138,12 +135,6 @@ request.get({
 	}
 	if (response && response.statusCode === 200) {
 		const articles = generate_article_list(body)
-
-		if (articles.length === 0) {
-			console.error('No articles found for the given categories.')
-			return
-		}
-
 		write_article_list(articles, article_list_file)
 	} else if (!response) {
 		e.fatal_error('No response received from PetScan!')

@@ -31,8 +31,7 @@ try {
 	require('fs').statSync(article_list_file)
 } catch(error) {
 	if(error.code === 'ENOENT') {
-		console.error(`Article list file '${article_list_file}' missing.`)
-		return
+		e.fatal_error(`Article list file '${article_list_file}' missing.`)
 	}
 
 	throw err
