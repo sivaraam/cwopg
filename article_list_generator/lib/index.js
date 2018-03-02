@@ -135,6 +135,11 @@ request.get({
 	}
 	if (response && response.statusCode === 200) {
 		const articles = generate_article_list(body)
+
+		if (articles.length === 0) {
+			e.fatal_error('No articles found for the given category.')
+		}
+
 		write_article_list(articles, article_list_file)
 	} else if (!response) {
 		e.fatal_error('No response received from PetScan!')
