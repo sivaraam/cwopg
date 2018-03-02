@@ -34,6 +34,8 @@ public class TreeExample1 {
         System.out.println(appender + node.getData());
         node.getChildren().forEach(each ->printTree(each, appender + "    "));
     }
+
+    // FIXME: avoid substring matching. Do sub-word matching
     private static void search(Node node,String key)
     {
          key = key.toLowerCase();
