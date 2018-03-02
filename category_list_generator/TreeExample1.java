@@ -142,7 +142,7 @@ public class TreeExample1 {
         Node va_5 = vital_articles.addChild(new Node("Wikipedia vital articles in Technology"));
         Node va_6 = vital_articles.addChild(new Node("Wikipedia vital articles in Science"));
 
-        Node health = root.addChild(new Node("Health and fitness"));
+        Node health = root.addChild(new Node("Health"));
 
         Node engineering = root.addChild(new Node("Electricity"));
 
@@ -158,7 +158,7 @@ public class TreeExample1 {
         Node indoor_chess = gaming.addChild(new Node("Chess"));
         Node sudoku = gaming.addChild(new Node("Sudoku"));
         Node television = entertainment.addChild(new Node("Companies"));
-        Node tv_samsung = television.addChild(new Node("Electronics_companies"));
+        Node tv_samsung = television.addChild(new Node("Electronics companies"));
         Node tv_android = television.addChild(new Node("Open content companies"));
 
         Node maths = root.addChild(new Node("Mathematics"));
