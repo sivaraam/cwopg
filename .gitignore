@@ -11,3 +11,5 @@ articleList
 */node_modules
 
 *.class
+
+output/
