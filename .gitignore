@@ -9,3 +9,5 @@ articleList
 
 # Ignore the node_modules directory in various modules
 */node_modules
+
+*.class
