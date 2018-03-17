@@ -12,4 +12,8 @@ articleList
 
 *.class
 
-output/
+# Dependencies
+node_modules
+
+# Generated files
+output
