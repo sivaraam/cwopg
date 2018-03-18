@@ -53,7 +53,6 @@ function generate_category_list_files (cats_file) {
 
 		cats_writer.write (curr_cats_str)
 
-		// Push current set of categories into the array
 		curr_cats.forEach (function (cat) {
 			curr_cats_str += cat.category + '\n'
 		})
@@ -61,6 +60,8 @@ function generate_category_list_files (cats_file) {
 
 		cats_writer.write (curr_cats_str)
 
+		// we need to continue the 'continuable' request
+		// to get a list of all categories till the end
 		return true
 	}
 
