@@ -23,6 +23,10 @@
   "homepage": "https://github.com/sivaraam/cwopg#readme",
   "dependencies": {
     "article_list_generator": "file:article_list_generator",
+    "category_list_generator": "file:category_list_generator",
     "package_generator": "file:package_generator"
+  },
+  "devDependencies": {
+    "enwiki_cats_list_generator": "file:enwiki_cats_list_generator"
   }
 }
