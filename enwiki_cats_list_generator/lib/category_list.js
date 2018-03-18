@@ -44,27 +44,26 @@ const api_request_params = {
 	list: 'allcategories'
 }
 
-const cats_file = '../wiki-cats'
-const cats_writer = fs.createWriteStream(cats_file)
+function generate_category_list_files (cats_file) {
+	const cats_writer = fs.createWriteStream(cats_file)
 
-function mw_api_client_cat_callback (response) {
-	const curr_cats = response.query.allcategories
-	var curr_cats_str = ''
+	function mw_api_client_cat_callback (response) {
+		const curr_cats = response.query.allcategories
+		var curr_cats_str = ''
 
-	cats_writer.write (curr_cats_str)
+		cats_writer.write (curr_cats_str)
 
-	// Push current set of categories into the array
-	curr_cats.forEach (function (cat) {
-		curr_cats_str += cat.category + '\n'
-	})
-	curr_cats_str = curr_cats_str.trim()
+		// Push current set of categories into the array
+		curr_cats.forEach (function (cat) {
+			curr_cats_str += cat.category + '\n'
+		})
+		curr_cats_str = curr_cats_str.trim()
 
-	cats_writer.write (curr_cats_str)
+		cats_writer.write (curr_cats_str)
 
-	return true
-}
+		return true
+	}
 
-function generate_category_list_files () {
 	mw_api_client
 		.iterate(api_request_params, null, mw_api_client_cat_callback)
 		.then(function (api_res) {

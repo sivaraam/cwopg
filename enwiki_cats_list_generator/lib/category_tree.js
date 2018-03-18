@@ -26,49 +26,12 @@ const fs = require('fs')
 const e = require('../../lib/error.js')
 
 /**
- * The file contains all the categories currently present in the category tree
- * rooted at 'Main_topic_classifications' with a depth of 2.
- */
-const cats_file = '../wiki-cats'
-const cats_writer = fs.createWriteStream(cats_file)
-
-/**
  * New instance used to access the MW API
  */
 const mw_api_client = new mw_api (
 	'Category tree generator (kaartic.sivaraam+mwapi@gmail.com, User:Kaartic)',
 	'https://en.wikipedia.org/w/api.php'
 )
-
-/**
- * Dumps the names of the categories present in the category tree response
- * obtained from the API to a file.
- *
- * The response is currently in the HTML format with each name identified by a
- * specific class.
- */
-function mw_api_client_cat_tree_callback (response) {
-	if (response.html === null)
-		e.fatal_error ('Output not in expected format!')
-
-	const category_label_selector = '.CategoryTreeLabel'
-	const { document } = (new JSDOM(response.categorytree.html)).window;
-	const nodes = document.querySelectorAll (category_label_selector)
-	var cats_str = ''
-
-	// sanity check
-	if (nodes.length === 0) {
-		e.fatal_error('Fetching categories failed!')
-	}
-	else {
-		console.log(`Successfully got ${nodes.length} categories.`)
-	}
-
-	nodes.forEach (function (node) {
-		cats_str += node.textContent + '\n'
-	})
-	cats_writer.write (cats_str)
-}
 
 /**
  * The API request parameters
@@ -79,7 +42,39 @@ const api_request_params = {
 	options: '{ "depth": 2 }'
 }
 
-function generate_category_list_files () {
+function generate_category_list_files (cats_file) {
+
+	/**
+	 * Dumps the names of the categories present in the category tree response
+	 * obtained from the API to the given file.
+	 *
+	 * The response is currently in the HTML format with each name identified by a
+	 * specific class.
+	 */
+	function mw_api_client_cat_tree_callback (response) {
+		if (response.html === null)
+			e.fatal_error ('Output not in expected format!')
+
+		const category_label_selector = '.CategoryTreeLabel'
+		const { document } = (new JSDOM(response.categorytree.html)).window;
+		const nodes = document.querySelectorAll (category_label_selector)
+		const cats_writer = fs.createWriteStream(cats_file)
+		var cats_str = ''
+
+		// sanity check
+		if (nodes.length === 0) {
+			e.fatal_error('Fetching categories failed!')
+		}
+		else {
+			console.log(`Successfully got ${nodes.length} categories.`)
+		}
+
+		nodes.forEach (function (node) {
+			cats_str += node.textContent + '\n'
+		})
+		cats_writer.write (cats_str)
+	}
+
 	mw_api_client
 		.execute(api_request_params)
 		.then(function (api_res) {
