@@ -1,0 +1,27 @@
+{
+  "name": "category_list_generator",
+  "version": "0.0.1",
+  "description": "The 'categoty list generator' sub-module of the \"Customised Wikipedia Offline Package Generator(cwopg)\" module. It would generate a list of relevant categories from a set of enwiki categories based on the given user input.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivaraam/cwopg.git"
+  },
+  "keywords": [
+    "js",
+    "wiki",
+    "wikipedia"
+  ],
+  "author": "Kaartic Sivaraam",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sivaraam/cwopg/issues"
+  },
+  "homepage": "https://github.com/sivaraam/cwopg#readme",
+  "dependencies": {
+    "stemmer": "^1.0.2"
+  }
+}
