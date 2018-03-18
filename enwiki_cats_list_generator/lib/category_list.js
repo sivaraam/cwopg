@@ -11,6 +11,9 @@
  *	%s/([0-9][0-9]*,'\([a-zA-Z0-9_\.\,\&()-][a-zA-Z0-9_\.\,\&()-]*\)',[0-9][0-9]*,[0-9][0-9]*,[0-9][0-9]*),/\1\r/
  *
  * would extract most of the category names.
+ *
+ * Though the data might be a little out-of-date, it's much easier and
+ * is less time & resource consuming.
  */
 
 /**
