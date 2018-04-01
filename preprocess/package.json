@@ -1,0 +1,34 @@
+{
+  "name": "preprocess",
+  "version": "0.0.1",
+  "description": "A sub-sub-module that does some simple preprocessing of a string (possibly a query) to decompose it into searchable elements that are free from separators etc.",
+  "main": "lib/preprocess.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivaraam/cwopg.git"
+  },
+  "keywords": [
+    "js",
+    "stemming",
+    "information",
+    "retrieval",
+    "search",
+    "text",
+    "preprocess"
+  ],
+  "author": "Kaartic Sivaraam",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sivaraam/cwopg/issues"
+  },
+  "homepage": "https://github.com/sivaraam/cwopg#readme",
+  "dependencies": {
+    "stemmer": "^1.0.2"
+  }
+}
