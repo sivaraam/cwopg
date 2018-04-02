@@ -1,0 +1,29 @@
+{
+  "name": "enwiki_cats_preprocessor",
+  "version": "0.0.1",
+  "description": "The module that preprocesses the list of Wikipedia categories to generate a custom preprocessed file which constitute the category identifier (category name) and the set of elements that constitute the searchable elements for the corresponding category in a custom format. The output is used by the category_list_generator module.",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivaraam/cwopg.git"
+  },
+  "keywords": [
+    "wiki",
+    "preprocess",
+    "wiki",
+    "categories",
+    "search"
+  ],
+  "author": "Kaartic Sivaraam",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sivaraam/cwopg/issues"
+  },
+  "homepage": "https://github.com/sivaraam/cwopg#readme"
+}

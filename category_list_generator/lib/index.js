@@ -12,13 +12,22 @@
 	const preprocess = require('../../preprocess/lib/preprocess');
 
 	/**
-	 * Generates an array representation of the list of enwiki categories in the file.
-	 * Each line is expected to represent a valid category in enwiki.
+	 * Generates an array representation of the list of enwiki categories and their
+	 * corresponding searchable elements present in a preprocessed file. Each line
+	 * is expected to said to be in the following format:
 	 *
-	 * Returns the array of categories on success. Returns null in case of an error.
+	 *     <Catgory_ID><Property_sep><Category_searchable_elem><Elem_sep><Category_searchable_elem>...
+	 *
+	 * Returns an array of objects which contain the 'id' and 'elems' properties.
+	 * The 'id' property is a string which contains the unique identifier for the
+	 * category and the 'elems' property contains the searchable elements which
+	 * correspond to the specific category. Returns null in case of an error.
 	 */
 	const read_enwiki_cats = function (enwiki_cats_file) {
-		var enwiki_cats = null;
+		const enwiki_cats_property_separator = ';';
+		const enwiki_cats_property_elems_separator = ' ';
+		const enwiki_cats = [];
+		var enwiki_cats_lines = null;
 
 		/*
 		 * Ensure that the enwiki category list file exists
@@ -36,14 +45,22 @@
 
 		console.log(`About to read the enwiki category list file (${enwiki_cats_file}).`);
 
-		enwiki_cats = fs.readFileSync(enwiki_cats_file, 'utf-8')
-		                .split('\n')
-		                .filter(Boolean);  // to ignore empty lines
+		enwiki_cats_lines = fs.readFileSync(enwiki_cats_file, 'utf-8')
+		                      .split('\n')
+		                      .filter(Boolean);  // to ignore empty lines
 
 		/* sanity check */
-		if (enwiki_cats == null) {
+		if (enwiki_cats_lines == null) {
 			return null;
 		}
+
+		enwiki_cats_lines.forEach(function (line) {
+			const properties = line.split(enwiki_cats_property_separator);
+			enwiki_cats.push({
+				id: properties[0],
+				elems: properties[1].split(enwiki_cats_property_elems_separator)
+			});
+		});
 
 		console.log(`Successfully read ${enwiki_cats.length} categories.`);
 
@@ -71,25 +88,22 @@
 	/**
 	 * Finds a list of relevant categories from the given set of enwiki categories
 	 * for the given user query string.
+	 *
+	 * Returns an array containing the list of ids corresponding to the relevant
+	 * categories.
 	 */
-	const get_relevant_cats = function (user_query, enwiki_cats_arr) {
-		const relevant_cats = [];
-		const enwiki_cats_elems = [];
+	const get_relevant_cats = function (user_query, enwiki_cats) {
+		const relevant_cats_id = [];
 		const user_query_elems = preprocess (user_query);
 
-		// preprocess the Categories
-		enwiki_cats_arr.forEach (function (cat) {
-			enwiki_cats_elems.push(preprocess (cat));
-		});
-
-		for (var i=0; i < enwiki_cats_arr.length; i++) {
-			if (is_cat_relevant (enwiki_cats_elems[i], user_query_elems)) {
-				relevant_cats.push (enwiki_cats_arr[i]);
+		for (var i=0; i < enwiki_cats.length; i++) {
+			if (is_cat_relevant (enwiki_cats[i].elems, user_query_elems)) {
+				relevant_cats_id.push (enwiki_cats[i].id);
 			}
 		}
 
-		console.log (`Found ${relevant_cats.length} categories for the user query '${user_query}'`);
-		return relevant_cats;
+		console.log (`Found ${relevant_cats_id.length} categories for the user query '${user_query}'`);
+		return relevant_cats_id;
 	}
 
 	/**
@@ -106,26 +120,26 @@
 		/**
 		 * The array corresponding to the category list in the file.
 		 */
-		const enwiki_cats_arr = read_enwiki_cats(enwiki_cats_file);
+		const enwiki_cats = read_enwiki_cats(enwiki_cats_file);
 		var relevant_cats_id = null;
 
-		if (enwiki_cats_arr === null) {
+		if (enwiki_cats === null) {
 			e.fatal_error (`Error while reading enwiki categories file '${enwiki_cats_file}`);
 		}
 
-		if (enwiki_cats_arr.length === 0) {
+		if (enwiki_cats.length === 0) {
 			e.fatal_error (`Could not get any categories from the enwiki categories file '${enwiki_cats_file}'`);
 		}
 
-		relevant_cats = get_relevant_cats (user_query, enwiki_cats_arr);
+		relevant_cats_id = get_relevant_cats (user_query, enwiki_cats);
 
-		if (relevant_cats.length === 0) {
+		if (relevant_cats_id.length === 0) {
 			e.fatal_error ('Could not find any relevant categories for the given query');
 		}
 
 		console.log(`About to generate the category list file (${category_list_file}).`);
 
-		fs.writeFileSync(category_list_file, relevant_cats.join('\n'), function(err) {
+		fs.writeFileSync(category_list_file, relevant_cats_id.join('\n'), function(err) {
 			if(err) {
 				throw err;
 			}
