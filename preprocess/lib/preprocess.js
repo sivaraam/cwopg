@@ -9,7 +9,7 @@ const stemmer = require ('stemmer');
  * Preprocess the string to generate a set of elements
  * that could that represent searchable elements of the string.
  */
-function preprocess (string) {
+const preprocess = function (string) {
 	const separator_re =  /[\s;,\.\(\)_]/;
 	const searchable_elems = string.trim()
 				       .toLowerCase()
@@ -20,6 +20,6 @@ function preprocess (string) {
 	});
 
 	return searchable_elems;
-}
+};
 
 module.exports = preprocess;

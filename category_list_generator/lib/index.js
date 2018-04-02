@@ -16,7 +16,7 @@ const preprocess = require('../../preprocess/lib/preprocess');
  *
  * Returns the array of categoreis on success. Returns null in case of an error.
  */
-function read_enwiki_cats (enwiki_cats_file) {
+const read_enwiki_cats = function (enwiki_cats_file) {
 	// ensure that the enwiki category list file exists
 	try {
 		fs.statSync(enwiki_cats_file);
@@ -43,7 +43,7 @@ function read_enwiki_cats (enwiki_cats_file) {
 	console.log(`Successfully read ${enwiki_cats.length} categories.`);
 
 	return enwiki_cats;
-}
+};
 
 /**
  * Returns true if the category given as a string is relevant to the given
@@ -67,7 +67,7 @@ const is_cat_relevant = function (cat, user_query_elems) {
  * Finds a list of relevant categories from the given set of enwiki categories
  * for the given user query string.
  */
-function get_relevant_cats (user_query, enwiki_cats_arr) {
+const get_relevant_cats = function (user_query, enwiki_cats_arr) {
 	const relevant_cats = [];
 	const user_query_elems = preprocess (user_query);
 	const enwiki_cats_elems = [];
@@ -91,7 +91,7 @@ function get_relevant_cats (user_query, enwiki_cats_arr) {
  * Generate the category list file consisting of relevant categories for a
  * given user query string.
  */
-function generate_category_list (user_query, enwiki_cats_file_name, category_list_file_name) {
+const generate_category_list = function (user_query, enwiki_cats_file_name, category_list_file_name) {
 
 	/* Resolve the name of the files to their corresponding relative path */
 	const project_root = path.dirname(require.main.filename);
@@ -126,6 +126,6 @@ function generate_category_list (user_query, enwiki_cats_file_name, category_lis
 
 		console.log('Generated the category list file.');
 	});
-}
+};
 
 module.exports.generate_category_list = generate_category_list;

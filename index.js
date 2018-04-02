@@ -60,7 +60,7 @@ const article_list_file_name = 'articleList';
  */
 const zim_output_dir_name ='public/output';
 
-function generate_package (user_query) {
+const generate_package = function (user_query) {
 	try {
 		category_list_generator.generate_category_list (user_query,
 		                                                enwiki_cats_file_name,
@@ -75,6 +75,6 @@ function generate_package (user_query) {
 	catch (error) {
 		throw error;
 	}
-}
+};
 
 generate_package ('sudoku');

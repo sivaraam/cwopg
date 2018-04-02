@@ -42,7 +42,7 @@ const api_request_params = {
 	options: '{ "depth": 2 }'
 };
 
-function generate_category_list_files (cats_file) {
+const generate_category_list_files = function (cats_file) {
 
 	/**
 	 * Dumps the names of the categories present in the category tree response
@@ -51,7 +51,7 @@ function generate_category_list_files (cats_file) {
 	 * The response is currently in the HTML format with each name identified by a
 	 * specific class.
 	 */
-	function mw_api_client_cat_tree_callback (response) {
+	const mw_api_client_cat_tree_callback = function (response) {
 		if (response.html === null)
 			e.fatal_error ('Output not in expected format!');
 
@@ -73,13 +73,13 @@ function generate_category_list_files (cats_file) {
 			cats_str += node.textContent + '\n';
 		});
 		cats_writer.write(cats_str);
-	}
+	};
 
 	mw_api_client
 		.execute(api_request_params)
 		.then(function (api_res) {
 			mw_api_client_cat_tree_callback (api_res)
 		});
-}
+};
 
 module.exports = generate_category_list_files;

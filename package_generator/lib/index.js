@@ -20,7 +20,7 @@ const e = require('../../lib/error');
 	*
 	* Each line of the file is expected to represent a valid article title.
 	*/
-function generate_zim_package (article_list_file_name, zim_output_dir_name) {
+const generate_zim_package = function (article_list_file_name, zim_output_dir_name) {
 
 	/* Resolve the name of the files to their corresponding relative path */
 	const project_root = path.dirname(require.main.filename);
@@ -46,6 +46,6 @@ function generate_zim_package (article_list_file_name, zim_output_dir_name) {
 
 	// generate the ZIM file
 	mwoffliner.execute(parameters);
-}
+};
 
 module.exports.generate_zim_package = generate_zim_package;

@@ -27,7 +27,7 @@ const petscan_params = require('../config/article_list_generator.json');
   * Returns an array in which each element represents a category. Returns null
   * in case the file doesn't exist.
   */
-function read_category_list_file(category_list_file) {
+const read_category_list_file = function (category_list_file) {
 	// ensure that the category list file exists
 	try {
 		fs.statSync(category_list_file);
@@ -53,12 +53,12 @@ function read_category_list_file(category_list_file) {
 	console.log(`Successfully read ${categories.length} categories.`);
 
 	return categories;
-}
+};
 
 /**
   * Writes the given set of articles to the given article list file.
   */
-function write_article_list_file(articles, article_list_file) {
+const write_article_list_file = function (articles, article_list_file) {
 	console.log(`About to generate the article list file (${article_list_file}).`);
 
 	fs.writeFileSync(article_list_file, articles.join('\n'),  function(err) {
@@ -68,13 +68,13 @@ function write_article_list_file(articles, article_list_file) {
 
 		console.log('Generated the article list file.');
 	});
-}
+};
 
 /**
   * Generates the article list from the PetScan's response which is given in as
   * a JSON string and writes one article per line in the given artile list file.
   */
-function generate_article_list_file_from_petscan_res(petscan_json_response, article_list_file) {
+const generate_article_list_file_from_petscan_res = function (petscan_json_response, article_list_file) {
 	const petscan_response = JSON.parse(petscan_json_response);
 	const articles_object = petscan_response['*'][0].a['*'];
 
@@ -95,9 +95,9 @@ function generate_article_list_file_from_petscan_res(petscan_json_response, arti
 	console.log(`Successfully got ${articles.length} articles for the given set of categories.`);
 
 	write_article_list_file(articles, article_list_file);
-}
+};
 
-function generate_article_list (category_list_file_name, article_list_file_name) {
+const generate_article_list = function (category_list_file_name, article_list_file_name) {
 
 	/* Resolve the name of the files to their corresponding relative path */
 	const project_root = path.dirname(require.main.filename);
@@ -135,6 +135,6 @@ function generate_article_list (category_list_file_name, article_list_file_name)
 			e.fatal_error(`PetScan request failed with status code: ${response.statusCode}\n${response.body}`);
 		}
 	});
-}
+};
 
 module.exports.generate_article_list = generate_article_list;
