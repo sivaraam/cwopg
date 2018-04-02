@@ -1,15 +1,15 @@
 'use strict';
 
 /**
-  * This program generates a list of articles that belong to a given set of
-  * categories or it's children.
-  */
+ * This program generates a list of articles that belong to a given set of
+ * categories or it's children.
+ */
 
 (function () {
 	/**
-	  * The library required for manipulating HTTP GET requests
-	  * and it's response.
-	  */
+	 * The library required for manipulating HTTP GET requests
+	 * and it's response.
+	 */
 	const request = require('request');
 	const path = require('path');
 	const fs = require('fs');
@@ -18,18 +18,22 @@
 	const petscan_url = 'https://petscan.wmflabs.org/';
 
 	/**
-	  * Get the PetScan parameters that don't change often.
-	  */
+	 * Get the PetScan parameters that don't change often.
+	 */
 	const petscan_params = require('../config/article_list_generator.json');
 
 	/**
-	  * Reads the category list file and returns the list of categories in it.
-	  *
-	  * Returns an array in which each element represents a category. Returns null
-	  * in case the file doesn't exist.
-	  */
+	 * Reads the category list file and returns the list of categories in it.
+	 *
+	 * Returns an array in which each element represents a category. Returns null
+	 * in case the file doesn't exist.
+	 */
 	const read_category_list_file = function (category_list_file) {
-		// ensure that the category list file exists
+		var categories = null;
+
+		/*
+		 * Ensure that the category list file exists
+		 */
 		try {
 			fs.statSync(category_list_file);
 		} catch(error) {
@@ -42,11 +46,11 @@
 
 		console.log(`About to read the category list file (${category_list_file}).`);
 
-		const categories = fs.readFileSync(category_list_file, 'utf-8')
-				     .split('\n')
-				     .filter(Boolean);  // to ignore empty lines
+		categories = fs.readFileSync(category_list_file, 'utf-8')
+		               .split('\n')
+		               .filter(Boolean);  // to ignore empty lines
 
-		// sanity check
+		/* sanity check */
 		if (categories == null) {
 			return null;
 		}
@@ -57,8 +61,8 @@
 	};
 
 	/**
-	  * Writes the given set of articles to the given article list file.
-	  */
+	 * Writes the given set of articles to the given article list file.
+	 */
 	const write_article_list_file = function (articles, article_list_file) {
 		console.log(`About to generate the article list file (${article_list_file}).`);
 
@@ -72,18 +76,17 @@
 	};
 
 	/**
-	  * Generates the article list from the PetScan's response which is given in as
-	  * a JSON string and writes one article per line in the given artile list file.
-	  */
+	 * Generates the article list from the PetScan's response which is given in as
+	 * a JSON string and writes one article per line in the given artile list file.
+	 */
 	const generate_article_list_file_from_petscan_res = function (petscan_json_response, article_list_file) {
 		const petscan_response = JSON.parse(petscan_json_response);
 		const articles_object = petscan_response['*'][0].a['*'];
+		const articles = [];
 
 		if (articles_object === null) {
 			e.fatal_error('Failed to fetch article list from PetScan response');
 		}
-
-		const articles = [];
 
 		for (var curr=0; curr<articles_object.length; curr++) {
 			articles.push(articles_object[curr].title);
@@ -100,7 +103,9 @@
 
 	const generate_article_list = function (category_list_file_name, article_list_file_name) {
 
-		/* Resolve the name of the files to their corresponding relative path */
+		/*
+		 * Resolve the name of the files to their corresponding relative path
+		 */
 		const project_root = path.dirname(require.main.filename);
 		const category_list_file = path.resolve(project_root, category_list_file_name);
 		const article_list_file = path.resolve(project_root, article_list_file_name);
@@ -119,8 +124,10 @@
 
 		console.log('Requesting the article list for the given set of categories.');
 
-		// Do the HTTP request to PetScan to get the list of articles for the given
-		// set of categories.
+		/*
+		 * Do the HTTP request to PetScan to get the list of articles for the given
+		 * set of categories.
+		 */
 		request.get({
 			url: petscan_url,
 			qs: petscan_params

@@ -15,10 +15,14 @@
 	 * Generates an array representation of the list of enwiki categories in the file.
 	 * Each line is expected to represent a valid category in enwiki.
 	 *
-	 * Returns the array of categoreis on success. Returns null in case of an error.
+	 * Returns the array of categories on success. Returns null in case of an error.
 	 */
 	const read_enwiki_cats = function (enwiki_cats_file) {
-		// ensure that the enwiki category list file exists
+		var enwiki_cats = null;
+
+		/*
+		 * Ensure that the enwiki category list file exists
+		 */
 		try {
 			fs.statSync(enwiki_cats_file);
 		} catch(error) {
@@ -32,11 +36,11 @@
 
 		console.log(`About to read the enwiki category list file (${enwiki_cats_file}).`);
 
-		const enwiki_cats = fs.readFileSync(enwiki_cats_file, 'utf-8')
-				      .split('\n')
-				      .filter(Boolean);  // to ignore empty lines
+		enwiki_cats = fs.readFileSync(enwiki_cats_file, 'utf-8')
+		                .split('\n')
+		                .filter(Boolean);  // to ignore empty lines
 
-		// sanity check
+		/* sanity check */
 		if (enwiki_cats == null) {
 			return null;
 		}
@@ -70,8 +74,8 @@
 	 */
 	const get_relevant_cats = function (user_query, enwiki_cats_arr) {
 		const relevant_cats = [];
-		const user_query_elems = preprocess (user_query);
 		const enwiki_cats_elems = [];
+		const user_query_elems = preprocess (user_query);
 
 		// preprocess the Categories
 		enwiki_cats_arr.forEach (function (cat) {
@@ -103,6 +107,7 @@
 		 * The array corresponding to the category list in the file.
 		 */
 		const enwiki_cats_arr = read_enwiki_cats(enwiki_cats_file);
+		var relevant_cats_id = null;
 
 		if (enwiki_cats_arr === null) {
 			e.fatal_error (`Error while reading enwiki categories file '${enwiki_cats_file}`);
@@ -112,7 +117,7 @@
 			e.fatal_error (`Could not get any categories from the enwiki categories file '${enwiki_cats_file}'`);
 		}
 
-		const relevant_cats = get_relevant_cats (user_query, enwiki_cats_arr);
+		relevant_cats = get_relevant_cats (user_query, enwiki_cats_arr);
 
 		if (relevant_cats.length === 0) {
 			e.fatal_error ('Could not find any relevant categories for the given query');

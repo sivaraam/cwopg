@@ -62,7 +62,7 @@
 			const cats_writer = fs.createWriteStream(cats_file);
 			var cats_str = '';
 
-			// sanity check
+			/* sanity check */
 			if (nodes.length === 0) {
 				e.fatal_error('Fetching category tree failed!');
 			}
@@ -76,11 +76,10 @@
 			cats_writer.write(cats_str);
 		};
 
-		mw_api_client
-			.execute(api_request_params)
-			.then(function (api_res) {
-				mw_api_client_cat_tree_callback (api_res)
-			});
+		mw_api_client.execute(api_request_params)
+		             .then(function (api_res) {
+		                 mw_api_client_cat_tree_callback (api_res)
+		             });
 	};
 
 	module.exports = generate_category_list_files;
