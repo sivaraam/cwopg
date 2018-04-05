@@ -11,7 +11,6 @@
 	 * and it's response.
 	 */
 	const request = require('request');
-	const path = require('path');
 	const fs = require('fs');
 	const e = require('../../lib/error.js');
 
@@ -21,44 +20,6 @@
 	 * Get the PetScan parameters that don't change often.
 	 */
 	const petscan_params = require('../config/article_list_generator.json');
-
-	/**
-	 * Reads the category list file and returns the list of categories in it.
-	 *
-	 * Returns an array in which each element represents a category. Returns null
-	 * in case the file doesn't exist.
-	 */
-	const read_category_list_file = function (category_list_file) {
-		var categories = null;
-
-		/*
-		 * Ensure that the category list file exists
-		 */
-		try {
-			fs.statSync(category_list_file);
-		} catch(error) {
-			if(error.code === 'ENOENT') {
-				return null;
-			}
-
-			throw error;
-		}
-
-		console.log(`About to read the category list file (${category_list_file}).`);
-
-		categories = fs.readFileSync(category_list_file, 'utf-8')
-		               .split('\n')
-		               .filter(Boolean);  // to ignore empty lines
-
-		/* sanity check */
-		if (categories == null) {
-			return null;
-		}
-
-		console.log(`Successfully read ${categories.length} categories.`);
-
-		return categories;
-	};
 
 	/**
 	 * Writes the given set of articles to the given article list file.
@@ -101,19 +62,13 @@
 		write_article_list_file(articles, article_list_file);
 	};
 
-	const generate_article_list = function (category_list_file_name, article_list_file_name) {
-
-		/*
-		 * Resolve the name of the files to their corresponding relative path
-		 */
-		const project_root = path.dirname(require.main.filename);
-		const category_list_file = path.resolve(project_root, category_list_file_name);
-		const article_list_file = path.resolve(project_root, article_list_file_name);
-
-		const categories = read_category_list_file(category_list_file);
-
+/**
+ * Generate the article list file by identifying the set of articles in the categories
+ * or its children and invoke the callback after successful completion.
+ */
+	const generate_article_list = function (categories, article_list_file, callback) {
 		if (categories === null) {
-			e.fatal_error(`Category list file ${category_list_file} does not exist`);
+			e.fatal_error('Invalid categories');
 		}
 
 		if (categories.length === 0) {
@@ -137,6 +92,7 @@
 			}
 			if (response && response.statusCode === 200) {
 				generate_article_list_file_from_petscan_res(body, article_list_file);
+				callback();
 			} else if (!response) {
 				e.fatal_error('No response received from PetScan!');
 			} else {

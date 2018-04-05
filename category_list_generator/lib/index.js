@@ -7,7 +7,6 @@
 
 (function () {
 	const fs = require('fs');
-	const path = require('path');
 	const e = require('../../lib/error.js');
 	const preprocess = require('../../preprocess/lib/preprocess');
 
@@ -107,16 +106,11 @@
 	}
 
 	/**
-	 * Generate the category list file consisting of relevant categories for a
-	 * given user query string.
+	 * Generate the category list consisting of relevant categories for a
+	 * given user query string and call the concerned callback after succcessfully
+	 * generating the list.
 	 */
-	const generate_category_list = function (user_query, enwiki_cats_file_name, category_list_file_name) {
-
-		/* Resolve the name of the files to their corresponding relative path */
-		const project_root = path.dirname(require.main.filename);
-		const enwiki_cats_file = path.resolve(project_root, enwiki_cats_file_name);
-		const category_list_file = path.resolve(project_root, category_list_file_name);
-
+	const generate_category_list = function (user_query, enwiki_cats_file, categories_callback) {
 		/**
 		 * The array corresponding to the category list in the file.
 		 */
@@ -137,15 +131,7 @@
 			e.fatal_error ('Could not find any relevant categories for the given query');
 		}
 
-		console.log(`About to generate the category list file (${category_list_file}).`);
-
-		fs.writeFileSync(category_list_file, relevant_cats_id.join('\n'), function(err) {
-			if(err) {
-				throw err;
-			}
-
-			console.log('Generated the category list file.');
-		});
+		categories_callback (relevant_cats_id);
 	};
 
 	module.exports.generate_category_list = generate_category_list;

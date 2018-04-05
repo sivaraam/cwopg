@@ -12,7 +12,6 @@
 	 * The library required to generate ZIM files.
 	 */
 	const mwoffliner =  require('mwoffliner');
-	const path = require('path');
 	const e = require('../../lib/error');
 
 	/**
@@ -21,12 +20,7 @@
 	 *
 	 * Each line of the file is expected to represent a valid article title.
 	 */
-	const generate_zim_package = function (article_list_file_name, zim_output_dir_name) {
-
-		/* Resolve the name of the files to their corresponding relative path */
-		const project_root = path.dirname(require.main.filename);
-		const article_list_file = path.resolve(project_root, article_list_file_name);
-		const zim_output_dir = path.resolve(project_root, zim_output_dir_name);
+	const generate_zim_package = function (article_list_file, zim_output_dir) {
 		var parameters = null;
 
 		try {
