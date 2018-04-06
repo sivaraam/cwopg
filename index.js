@@ -85,7 +85,7 @@
 	};
 
 	module.exports.generate_package = generate_package;
-	generate_package ('sudoku', function(output_file) {
+	/*generate_package ('sudoku', function(output_file) {
 		console.log('Package callback:', output_file);
-	});
+	});*/
 })();

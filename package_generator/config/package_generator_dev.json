@@ -2,6 +2,5 @@
   "mwUrl": "https://en.wikipedia.org/",
   "adminEmail": "kaarticsivaraam91196@gmail.com",
   "verbose": true,
-  "minifyHtml": true,
-  "creator": "Kaartic Sivaraam"
+  "minifyHtml": true
 }
