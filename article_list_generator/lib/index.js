@@ -22,25 +22,15 @@
 	const petscan_params = require('../config/article_list_generator.json');
 
 	/**
-	 * Writes the given set of articles to the given article list file.
-	 */
-	const write_article_list_file = function (articles, article_list_file) {
-		console.log(`About to generate the article list file (${article_list_file}).`);
-
-		fs.writeFileSync(article_list_file, articles.join('\n'),  function(err) {
-			if(err) {
-				throw err;
-			}
-
-			console.log('Generated the article list file.');
-		});
-	};
-
-	/**
 	 * Generates the article list from the PetScan's response which is given in as
 	 * a JSON string and writes one article per line in the given artile list file.
+	 *
+	 * Calls the callback after completion of the process.
 	 */
-	const generate_article_list_file_from_petscan_res = function (petscan_json_response, article_list_file) {
+	const generate_article_list_file_from_petscan_res =
+			function (petscan_json_response, article_list_file, callback) {
+
+		const write_options = { encoding: 'utf-8' };
 		const petscan_response = JSON.parse(petscan_json_response);
 		const articles_object = petscan_response['*'][0].a['*'];
 		const articles = [];
@@ -59,7 +49,17 @@
 
 		console.log(`Successfully got ${articles.length} articles for the given set of categories.`);
 
-		write_article_list_file(articles, article_list_file);
+		console.log(`About to generate the article list file (${article_list_file}).`);
+
+		fs.writeFile(article_list_file, articles.join('\n'), write_options, function(err) {
+			if(err) {
+				throw err;
+			}
+			else {
+				console.log('Generated the article list file.');
+				callback();
+			}
+		});
 	};
 
 /**
@@ -91,8 +91,7 @@
 				e.fatal_error(`error: ${error}`);
 			}
 			if (response && response.statusCode === 200) {
-				generate_article_list_file_from_petscan_res(body, article_list_file);
-				callback();
+				generate_article_list_file_from_petscan_res(body, article_list_file, callback);
 			} else if (!response) {
 				e.fatal_error('No response received from PetScan!');
 			} else {

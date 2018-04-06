@@ -20,50 +20,52 @@
 	 * Returns an array of objects which contain the 'id' and 'elems' properties.
 	 * The 'id' property is a string which contains the unique identifier for the
 	 * category and the 'elems' property contains the searchable elements which
-	 * correspond to the specific category. Returns null in case of an error.
+	 * correspond to the specific category.
+	 *
+	 * Throws an error in case of any issues. Else calls the callback with
+	 * the enwiki category list array.
 	 */
-	const read_enwiki_cats = function (enwiki_cats_file) {
-		const enwiki_cats_property_separator = ';';
-		const enwiki_cats_property_elems_separator = ' ';
-		const enwiki_cats = [];
-		var enwiki_cats_lines = null;
-
-		/*
-		 * Ensure that the enwiki category list file exists
-		 */
-		try {
-			fs.statSync(enwiki_cats_file);
-		} catch(error) {
-			if(error.code === 'ENOENT') {
-				console.error(error);
-				return null;
-			}
-
-			throw error;
-		}
-
+	const read_enwiki_cats = function (enwiki_cats_file, callback) {
+		const read_options = { encoding: 'utf-8' };
 		console.log(`About to read the enwiki category list file (${enwiki_cats_file}).`);
 
-		enwiki_cats_lines = fs.readFileSync(enwiki_cats_file, 'utf-8')
-		                      .split('\n')
-		                      .filter(Boolean);  // to ignore empty lines
+		fs.readFile(enwiki_cats_file, read_options, function enwiki_cats_pp_read_callback (err, data) {
+			if (err) {
+				if (err.code == 'ENOENT') {
+					e.fatal_error(`enwiki category list file ${enwiki_cats_file} missing.`);
+				}
+				else {
+					e.fatal_error(err);
+				}
+			}
+			else {
+				const enwiki_cats_property_separator = ';';
+				const enwiki_cats_property_elems_separator = ' ';
+				const enwiki_cats = [];
+				const enwiki_cats_lines = data.split('\n')
+				                              .filter(Boolean);  // to ignore empty lines
 
-		/* sanity check */
-		if (enwiki_cats_lines == null) {
-			return null;
-		}
+				if (enwiki_cats_lines === null) {
+					e.fatal_error (`Error while reading enwiki categories file '${enwiki_cats_file}`);
+				}
 
-		enwiki_cats_lines.forEach(function (line) {
-			const properties = line.split(enwiki_cats_property_separator);
-			enwiki_cats.push({
-				id: properties[0],
-				elems: properties[1].split(enwiki_cats_property_elems_separator)
-			});
+				if (enwiki_cats_lines.length === 0) {
+					e.fatal_error (`Could not get any categories from the enwiki categories file '${enwiki_cats_file}'`);
+				}
+
+				enwiki_cats_lines.forEach(function enwiki_cats_generator (line) {
+					const properties = line.split(enwiki_cats_property_separator);
+					enwiki_cats.push({
+						id: properties[0],
+						elems: properties[1].split(enwiki_cats_property_elems_separator)
+					});
+				});
+
+				console.log(`Successfully read ${enwiki_cats.length} categories.`);
+
+				callback(enwiki_cats);
+			}
 		});
-
-		console.log(`Successfully read ${enwiki_cats.length} categories.`);
-
-		return enwiki_cats;
 	};
 
 	/**
@@ -111,27 +113,15 @@
 	 * generating the list.
 	 */
 	const generate_category_list = function (user_query, enwiki_cats_file, categories_callback) {
-		/**
-		 * The array corresponding to the category list in the file.
-		 */
-		const enwiki_cats = read_enwiki_cats(enwiki_cats_file);
-		var relevant_cats_id = null;
+		read_enwiki_cats(enwiki_cats_file, function read_complete_callback (enwiki_cats) {
+			const relevant_cats_id = get_relevant_cats (user_query, enwiki_cats);
 
-		if (enwiki_cats === null) {
-			e.fatal_error (`Error while reading enwiki categories file '${enwiki_cats_file}`);
-		}
+			if (relevant_cats_id.length === 0) {
+				e.fatal_error ('Could not find any relevant categories for the given query');
+			}
 
-		if (enwiki_cats.length === 0) {
-			e.fatal_error (`Could not get any categories from the enwiki categories file '${enwiki_cats_file}'`);
-		}
-
-		relevant_cats_id = get_relevant_cats (user_query, enwiki_cats);
-
-		if (relevant_cats_id.length === 0) {
-			e.fatal_error ('Could not find any relevant categories for the given query');
-		}
-
-		categories_callback (relevant_cats_id);
+			categories_callback (relevant_cats_id);
+		});
 	};
 
 	module.exports.generate_category_list = generate_category_list;

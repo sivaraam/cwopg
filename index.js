@@ -52,7 +52,7 @@
 	 */
 	const zim_output_dir_name ='public/output';
 
-	const generate_package = function (user_query) {
+	const generate_package = function (user_query, package_callback) {
 		const common_path = path.resolve (__dirname, '.');
 		const enwiki_cats_file = path.resolve (common_path, enwiki_cats_file_name);
 		const article_list_file = path.resolve (common_path, article_list_file_name);
@@ -66,7 +66,12 @@
 
 		const article_list_callback = function () {
 			package_generator.generate_zim_package (article_list_file,
-			                                        zim_output_dir);
+			                                        zim_output_dir,
+			                                        package_generator_callback);
+		};
+
+		const package_generator_callback = function (output_file) {
+			package_callback (output_file);
 		};
 
 		try {
@@ -80,5 +85,7 @@
 	};
 
 	module.exports.generate_package = generate_package;
-	// generate_package ('sudoku');
+	generate_package ('sudoku', function(output_file) {
+		console.log('Package callback:', output_file);
+	});
 })();

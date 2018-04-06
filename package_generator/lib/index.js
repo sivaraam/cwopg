@@ -12,6 +12,8 @@
 	 * The library required to generate ZIM files.
 	 */
 	const mwoffliner =  require('mwoffliner');
+	const fs = require('fs');
+	const path = require('path');
 	const e = require('../../lib/error');
 
 	/**
@@ -20,29 +22,33 @@
 	 *
 	 * Each line of the file is expected to represent a valid article title.
 	 */
-	const generate_zim_package = function (article_list_file, zim_output_dir) {
+	const generate_zim_package = function (article_list_file, zim_output_dir, callback) {
+		const file_name = 'wikipedia_en_articlelist_2018-04.zim';
 		var parameters = null;
 
-		try {
-			require('fs').statSync(article_list_file);
-		} catch(error) {
-			if(error.code === 'ENOENT') {
-				console.error(error);
-				e.fatal_error(`Article list file '${article_list_file}' missing.`);
+		/* Generate the ZIM file only if the article list file exists and is readable */
+		fs.access(article_list_file, fs.constants.R_OK, function (err) {
+			if (err) {
+				if (err.code == 'ENOENT') {
+					e.fatal_error(`Article list file '${article_list_file}' missing.`);
+				}
+				else {
+					console.log(err);
+					e.fatal_error(`Unable to read the article list file '${article_list_file}'`);
+				}
 			}
+			else {
+				/**
+				 * Get the required 'mwoffliner' configuration that doesn't change often.
+				 */
+				parameters = require('../config/package_generator_dev.json');
+				parameters.articleList = article_list_file;
+				parameters.outputDirectory = zim_output_dir;
 
-			throw error;
-		}
-
-		/**
-		 * Get the required 'mwoffliner' configuration that doesn't change often.
-		 */
-		parameters = require('../config/package_generator_dev.json');
-		parameters.articleList = article_list_file;
-		parameters.outputDirectory = zim_output_dir;
-
-		/* Generate the ZIM file */
-		mwoffliner.execute(parameters);
+				mwoffliner.execute(parameters);
+				callback (path.join(zim_output_dir, file_name));
+			}
+		});
 	};
 
 	module.exports.generate_zim_package = generate_zim_package;
