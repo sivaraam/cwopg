@@ -32,7 +32,6 @@
 				}
 			}
 			else {
-				const file_name = 'wikipedia_en_articlelist_2018-04.zim';
 				const execa_options = { localDir: __dirname };
 				const npm_mwoffliner_cmd_params = [];
 				var npm_mwoffliner = null;
@@ -40,7 +39,7 @@
 				/**
 				 * Get the required 'mwoffliner' configuration that doesn't change often.
 				 */
-				const parameters = require('../config/package_generator_dev.json');
+				const parameters = require('../config/package_generator.json');
 				parameters.articleList = article_list_file;
 				parameters.outputDirectory = zim_output_dir;
 				parameters.filenamePrefix = 'zim-file';
@@ -65,15 +64,29 @@
 				npm_mwoffliner.stdout.pipe(process.stdout);
 				npm_mwoffliner.stderr.pipe(process.stderr);
 				npm_mwoffliner.then(result => {
-					// ZIM file built at /mnt/Source/Wiki/customized_offline_package_generator/out/zim-file_articlelist_2018-04.zim
-					callback(path.join(zim_output_dir, file_name));
+					/*
+					 * Regex to extract the filename from the 'verbose' output
+					 * of mwoffliner.
+					 *
+					 * FIXME: This is highly dependant on the output which might change at
+					 * anytime but there's no better way for now.
+					 */
+					const output_file_path_extract_regex = /ZIM file built at (.*\.zim)/;
+
+					/*
+					 * The output file path is at index 1 of the array
+					 * returned by exec().
+					 */
+					const output_file_path = output_file_path_extract_regex.exec(result.stdout)[1];
+
+					callback(output_file_path);
 				});
 			}
 		});
 	};
 
 	module.exports.generate_zim_package = generate_zim_package;
-	/*generate_zim_package('../articleList', '../out', function zim_op_file(file){
+	/*generate_zim_package('../articleList', '../public/out', function zim_op_file(file){
 		console.log(file);
 	});*/
 })();
