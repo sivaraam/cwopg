@@ -7,7 +7,7 @@
 
 (function () {
 	const fs = require('fs');
-	const preprocess = require('../../preprocess/lib/preprocess');
+	const preprocess = require('../../preprocess');
 	const e = require('../../lib/error');
 
 	const read_enwiki_cats_file = function (enwiki_cats_file, callback) {

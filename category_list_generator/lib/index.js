@@ -8,7 +8,7 @@
 (function () {
 	const fs = require('fs');
 	const e = require('../../lib/error.js');
-	const preprocess = require('../../preprocess/lib/preprocess');
+	const preprocess = require('../../preprocess');
 
 	/**
 	 * Generates an array representation of the list of enwiki categories and their
