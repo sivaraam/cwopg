@@ -26,8 +26,5 @@
     "category_list_generator": "file:category_list_generator",
     "enwiki_cats_preprocessor": "file:enwiki_cats_preprocessor",
     "package_generator": "file:package_generator"
-  },
-  "devDependencies": {
-    "enwiki_cats_list_generator": "file:enwiki_cats_list_generator"
   }
 }
