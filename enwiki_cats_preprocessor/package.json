@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/sivaraam/cwopg/issues"
   },
-  "homepage": "https://github.com/sivaraam/cwopg#readme"
+  "homepage": "https://github.com/sivaraam/cwopg#readme",
+  "dependencies": {
+    "preprocess": "file:../preprocess"
+  }
 }
