@@ -32,9 +32,11 @@
 				}
 			}
 			else {
+				const file_prefix = 'enwiki'
 				const execa_options = { localDir: __dirname };
 				const npm_mwoffliner_cmd_params = [];
 				var npm_mwoffliner = null;
+				var output_file_path = '';
 
 				/**
 				 * Get the required 'mwoffliner' configuration that doesn't change often.
@@ -42,7 +44,8 @@
 				const parameters = require('../config/package_generator.json');
 				parameters.articleList = article_list_file;
 				parameters.outputDirectory = zim_output_dir;
-				parameters.filenamePrefix = 'zim-file';
+				parameters.filenamePrefix = file_prefix;
+				/*parameters.customZimTitle = ; // TODO: add title */
 
 				Object.keys(parameters).forEach(function cmd_param_gen (key, index){
 					npm_mwoffliner_cmd_params.push(`--${key}`);
@@ -73,11 +76,33 @@
 					 */
 					const output_file_path_extract_regex = /ZIM file built at (.*\.zim)/;
 
-					/*
-					 * The output file path is at index 1 of the array
-					 * returned by exec().
-					 */
-					const output_file_path = output_file_path_extract_regex.exec(result.stdout)[1];
+					if (result.stdout) {
+						/*
+						 * The output file path is at index 1 of the array
+						 * returned by exec().
+						 */
+						output_file_path = output_file_path_extract_regex.exec(result.stdout)[1];
+					}
+					else {
+						const curr_date = new Date();
+						const curr_year = curr_date.getFullYear();
+						const curr_month = curr_date.getMonth()+1;
+						const curr_month_str = (curr_month<10) ?
+						                       `0${curr_month}` :
+						                       `${curr_month}`;
+
+						/*
+						 * We turned off stdout so fall back to generating
+						 * heuristic output file path.
+						 *
+						 * The file name is expected to be in the following format:
+						 *
+						 * <file_prefix>_articlelist_<year>-<month>.zim
+						 */
+						const output_file_name = file_prefix + '_' + 'articlelist' + '_' +
+						                         curr_year + '-' + curr_month_str + '.zim';
+						output_file_path = path.join(zim_output_dir, output_file_name);
+					}
 
 					callback(output_file_path);
 				});
