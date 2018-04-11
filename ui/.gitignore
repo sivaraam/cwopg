@@ -1,0 +1,3 @@
+# Ignore sass generated files
+.sass-cache/
+css/

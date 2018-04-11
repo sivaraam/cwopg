@@ -1,0 +1,14 @@
+@import "values";
+
+.form-container {
+  width: 90%;
+  height: 100%;
+  padding: $form-container-padding;
+
+  // take up all possible space of container
+  // So, there musn't be other elements in it's container
+  form {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Customised Wikipedia offline package generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
+
+    <!-- Material Design Components -->
+    <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/first-form.css">
+  </head>
+
+  <body>
+    <!--[if lt IE 8]>
+      <p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <header class="header-container">
+        <div class="header-image">
+          <img alt="wiki logo" src="img/Wikipedia logo version 2.svg">
+        </div>
+        <div class="header-text">
+          <h1>Customised Wikipedia offline package generator</h1>
+        </div>
+    </header>
+
+    <div class="main-container">
+      <div class="form-container">
+        <form action="custom-enwiki-package.zim" method="post">
+          <div class="form-item">
+            <div class="form-item-label">Keywords</div>
+            <div class="form-item-input">
+              <div class="mdc-text-field">
+                <input id="keywords" type="text" class="mdc-text-field__input" name="keywords" required placeholder="Eg: Sudoku">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-item">
+            <div class="form-item-input">
+              <button class="mdc-button mdc-button--raised mdc-button--primary" type="submit">
+                Get package
+              </button>
+            </div>
+          </div>
+        </form>
+      </div> <!-- form-container -->
+    </div> <!-- main-container -->
+
+    <div class="info">
+      <div id="info" class="info-item">
+        <h3>
+          Information
+        </h3>
+        Generate your own customised
+        <a href="https://www.mediawiki.org/wiki/Wikimedia_Apps/Offline_support#Glossary">
+          article pack
+        </a>
+        of Wikipedia articles by specifying a few keywords that relate to your interests. The query terms
+        are used to identify a list of relevant
+        <a href="https://en.wikipedia.org/wiki/Help:Category">
+          Wikipedia categories
+        </a>.
+        The categories are then used to generate a
+        <a href="https://www.mediawiki.org/wiki/Wikimedia_Apps/Offline_support#Glossary">
+          ZIM file
+        </a>
+        that contains pages in the set of categories that
+        were identified.
+      </div>
+
+      <div id="warning" class="info-item warning">
+        <h2>
+          WARNING
+        </h2>
+        Generation of the package may take time based on the categories found for the user query!
+      </div>
+    </div>
+
+<!--
+    Material design components JS
+-->    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script>
+      mdc.autoInit()
+      console.log ("Sucessfully initialised MDC components")
+    </script>
+<!---->
+  </body>
+</html>

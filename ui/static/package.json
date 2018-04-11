@@ -1,0 +1,36 @@
+{
+  "name": "cwopg-ui-static",
+  "version": "1.0.0",
+  "description": "The static files used in the uesr interface of the Customize Wikipedia Offline Package Generator",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile:sass": "node-sass --source-map true --output-style expanded --include-path ./node_modules -r sass -o css",
+    "deploy:sass": "node-sass --source-map true --output-style compressed --include-path ./node_modules -r sass -o css",
+    "watch:sass": "node-sass --watch --source-map true --output-style compressed --include-path ./node_modules -r sass -o css",
+    "build": "npm run compile:sass",
+    "deploy": "npm run deploy:sass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivaraam/cwopg.git"
+  },
+  "keywords": [
+    "material",
+    "design",
+    "ui",
+    "design",
+    "responsive"
+  ],
+  "author": "Kaartic Sivaraam",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sivaraam/cwopg/issues"
+  },
+  "homepage": "https://github.com/sivaraam/cwopg#readme",
+  "dependencies": {
+    "material-components-web": "^0.34.1",
+    "node-sass": "^4.8.3",
+    "normalize.css": "^8.0.0"
+  }
+}

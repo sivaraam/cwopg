@@ -1,0 +1,13 @@
+@import "form-common";
+
+.form-container {
+  form {
+    .form-item {
+      padding: $form-item-padding;
+
+      .form-item-input {
+        padding: $form-item-input-padding;
+      }
+    }
+  }
+}

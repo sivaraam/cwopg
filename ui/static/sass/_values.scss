@@ -1,0 +1,29 @@
+/*
+ Values that have set of four values are in the order,
+
+      <top> <right> <bottom> <left>
+
+*/
+
+/* common values */
+$header-elevation: 2;
+$header-max-height: 200px;
+$title-padding: 5px 0;
+$container-width: 640px;
+$container-max-width: 90%;
+$container-margin: 16px auto 24px auto;
+$container-big-screen-elevation: 4;
+$container-small-screen-elevation: 0;
+
+$known-data-width: 70%;
+$secondary-text-color: #757575;
+
+/* form values */
+$form-container-padding: 3% 5%;
+$form-item-padding: 2%;
+$form-item-input-padding: 2% 1% 1% 0;
+
+/* button values */
+$back-button-color: rgb(75, 75, 75);
+$back-button-margin: 0 0 0 2%;
+$submit-button-margin: 0 2% 0 0;
