@@ -7,15 +7,9 @@
 (function () {
 	const bot = require('nodemw');
 	const e = require('../../lib/error.js');
+	const nodemw_config = require('../config/nodemw-config.json')
+	const client = new bot(nodemw_config);
 	const articles = [];
-
-	// pass configuration object
-	const client = new bot({
-		protocol: 'https',           // Wikipedia now enforces HTTPS
-		server: 'en.wikipedia.org',  // host name of MediaWiki-powered site
-		path: '/w',                  // path to api.php script
-		debug: false                 // is more verbose when set to true
-	});
 
 	const get_articles_for_category_index = function (categories, index, callback) {
 		client.getPagesInCategory(categories[index], function(err, response) {
