@@ -28,9 +28,9 @@
 			e.fatal_error('Failed to fetch article list from PetScan response');
 		}
 
-		for (var curr=0; curr<articles_object.length; curr++) {
-			article_list.push(articles_object[curr].title);
-		}
+		articles_object.forEach (function article_list_gen (article_obj) {
+			article_list.push(article_obj.title);
+		});
 	};
 
 	/**
