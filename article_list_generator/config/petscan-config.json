@@ -3,7 +3,7 @@
 	"project": "wikipedia",
 	"depth": "998",
 	"combination": "union",
-	"ns%5B0%5D": "1",
+	"ns[0]": "1",
 	"show_redirects": "both",
 	"edits%5Bbots%5D": "both",
 	"edits%5Banons%5D": "both",
