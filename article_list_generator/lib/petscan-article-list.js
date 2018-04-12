@@ -11,7 +11,7 @@
 	/**
 	 * Get the PetScan parameters that don't change often.
 	 */
-	const petscan_params = require('../config/article_list_generator.json');
+	const petscan_params = require('../config/petscan-config.json');
 
 	/**
 	 * Generates the article list from the PetScan's response which is given in as
