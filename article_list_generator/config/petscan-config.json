@@ -5,9 +5,6 @@
 	"combination": "union",
 	"ns[0]": "1",
 	"show_redirects": "both",
-	"edits%5Bbots%5D": "both",
-	"edits%5Banons%5D": "both",
-	"edits%5Bflagged%5D": "both",
 	"subpage_filter": "either",
 	"common_wiki": "auto",
 	"wikidata_item": "no",
@@ -15,5 +12,5 @@
 	"format": "json",
 	"sortby": "none",
 	"sortorder": "ascending",
-	"doit": "Do%20it%21"
+	"doit": "Do it!"
 }
