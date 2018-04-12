@@ -12,15 +12,26 @@
 	const articles = [];
 
 	const get_articles_for_category_index = function (categories, index, callback) {
-		client.getPagesInCategory(categories[index], function(err, response) {
-			// error handling
+		const main_ns_id = 0, category_ns_id = 14;
+		const curr_cat = categories[index];
+		const max_depth = 250;
+
+		client.getPagesInCategory(curr_cat.title, function(err, response) {
 			if (err) {
 				e.fatal_error(err);
 			}
 
 			response.forEach(function (response_item) {
-				if (response_item.ns === 0) {
+				if (response_item.ns === main_ns_id) {
 					articles.push(response_item.title);
+				}
+				else if (response_item.ns === category_ns_id &&
+				         curr_cat.depth !== max_depth) {
+					categories.push({
+						/* Strip the 'Category:' prefix */
+						title: response_item.title.slice(9),
+						depth: curr_cat.depth+1
+					});
 				}
 			})
 
@@ -35,11 +46,26 @@
 	}
 
 	const generate_article_list = function (categories, callback) {
-		get_articles_for_category_index(categories, 0, function articles_generated () {
+		const category_objects = [];
+
+		/*
+		 * Generate the array of custom category objects from the
+		 * category list.
+		 *
+		 * The objects have the properties 'title' and 'depth'
+		 */
+		categories.forEach(function category_object_generator(category) {
+			category_objects.push({
+				title: category,
+				depth: 0
+			});
+		})
+
+		get_articles_for_category_index(category_objects, 0,
+		function articles_generated () {
 			callback (articles);
 		});
 	}
 
 	module.exports.generate_article_list = generate_article_list;
-	//get_article_list();
 })();
