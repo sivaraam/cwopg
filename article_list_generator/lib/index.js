@@ -7,7 +7,7 @@
 
 (function () {
 	const fs = require('fs');
-	const article_list_generator = require('./mwapi-article-list');
+	const article_list_generator = require('./petscan-article-list');
 
 	const generate_article_list_file = function (articles, article_list_file, callback) {
 		const write_options = { encoding: 'utf-8' };
