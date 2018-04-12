@@ -10,7 +10,7 @@
 	"wikidata_item": "no",
 	"wpiu": "any",
 	"format": "json",
-	"sortby": "none",
+	"sortby": "title",
 	"sortorder": "ascending",
 	"doit": "Do it!"
 }
