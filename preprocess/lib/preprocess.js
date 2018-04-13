@@ -11,7 +11,7 @@
 	 * that could that represent searchable elements of the string.
 	 */
 	const preprocess = function (string) {
-		const separator_re =  /[\s;,\.\(\)_]/;
+		const separator_re =  /[\s;,\.\(\)_]+/;
 		const searchable_elems = string.trim()
 					       .toLowerCase()
 					       .split(separator_re);
