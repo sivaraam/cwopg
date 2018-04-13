@@ -33,10 +33,11 @@
       <div class="form-container">
         <form action="custom-enwiki-package.zim" method="post">
           <div class="form-item">
-            <div class="form-item-label">Keywords</div>
             <div class="form-item-input">
-              <div class="mdc-text-field">
-                <input id="keywords" type="text" class="mdc-text-field__input" name="keywords" required placeholder="Eg: Sudoku">
+              <div class="mdc-text-field mdc-text-field--upgraded mdc-ripple-upgraded" data-mdc-auto-init="MDCTextField">
+                <input id="keywords" type="text" class="mdc-text-field__input" name="keywords" required title="Comma-separated list of keywords.">
+                <label class="mdc-floating-label" for="keywords">Keywords</label>
+                <div class="mdc-line-ripple"></div>
               </div>
             </div>
           </div>
@@ -82,13 +83,13 @@
       </div>
     </div>
 
-<!--
-    Material design components JS
--->    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <!--
+        Material design components JS
+    -->
+    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
     <script>
-      mdc.autoInit()
-      console.log ("Sucessfully initialised MDC components")
+      mdc.autoInit();
+      console.log ("Sucessfully initialised MDC components");
     </script>
-<!---->
   </body>
 </html>
