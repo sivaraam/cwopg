@@ -58,8 +58,14 @@ app.post ('/custom-enwiki-package.zim', function (request, response) {
 		});
 	};
 
+	const params = {
+		user_query: request.body.keywords,
+		nopic: request.body.nopic !== undefined,
+		novid: request.body.novid !== undefined
+	}
+
 	/* Generate the offline package for the obtained keywords */
-	package_generator_orchestrator.generate_package (request.body.keywords,
+	package_generator_orchestrator.generate_package (params,
 	                                                 package_callback);
 });
 

@@ -52,11 +52,15 @@
 	 */
 	const zim_output_dir_name ='public/output';
 
-	const generate_package = function (user_query, package_callback) {
+	const generate_package = function (params, package_callback) {
 		const common_path = path.resolve (__dirname, '.');
 		const enwiki_cats_file = path.resolve (common_path, enwiki_cats_file_name);
 		const article_list_file = path.resolve (common_path, article_list_file_name);
 		const zim_output_dir = path.resolve (common_path, zim_output_dir_name);
+		const package_options = {
+			nopic: params.nopic,
+			novid: params.novid
+		};
 
 		const category_list_callback = function (categories) {
 			article_list_generator.generate_article_list (categories,
@@ -67,6 +71,7 @@
 		const article_list_callback = function () {
 			package_generator.generate_zim_package (article_list_file,
 			                                        zim_output_dir,
+			                                        package_options,
 			                                        package_generator_callback);
 		};
 
@@ -75,7 +80,7 @@
 		};
 
 		try {
-			category_list_generator.generate_category_list (user_query,
+			category_list_generator.generate_category_list (params.user_query,
 			                                                enwiki_cats_file,
 			                                                category_list_callback);
 		}

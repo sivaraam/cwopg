@@ -19,7 +19,17 @@
 	 *
 	 * Each line of the file is expected to represent a valid article title.
 	 */
-	const generate_zim_package = function (article_list_file, zim_output_dir, callback) {
+	const generate_zim_package =
+	function (article_list_file, zim_output_dir, package_options, callback) {
+		const get_mwoffliner_format = function (package_options) {
+			var options = '';
+
+			options += (package_options.nopic) ? 'nopic,' : '';
+			options += (package_options.novid) ? 'novid' : '';
+
+			return options;
+		};
+
 		/* Generate the ZIM file only if the article list file exists and is readable */
 		fs.access(article_list_file, fs.constants.R_OK, function (err) {
 			if (err) {
@@ -45,6 +55,7 @@
 				parameters.articleList = article_list_file;
 				parameters.outputDirectory = zim_output_dir;
 				parameters.filenamePrefix = file_prefix;
+				parameters.format = get_mwoffliner_format(package_options);
 				/*parameters.customZimTitle = ; // TODO: add title */
 
 				Object.keys(parameters).forEach(function cmd_param_gen (key, index){
