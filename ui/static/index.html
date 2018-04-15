@@ -31,7 +31,7 @@
 
     <div class="main-container">
       <div class="form-container">
-        <form action="custom-enwiki-package.zim" method="post">
+        <form action="/custom-enwiki-package.zim" method="POST" id="package-generator-form">
           <div class="form-item">
             <div class="form-item-input">
               <div class="mdc-text-field mdc-text-field--upgraded mdc-ripple-upgraded" data-mdc-auto-init="MDCTextField">
@@ -95,11 +95,14 @@
 
           <div class="form-item">
             <div class="form-item-input">
-              <button class="mdc-button mdc-button--raised mdc-button--primary" type="submit">
+              <button class="mdc-button mdc-button--raised mdc-button--primary" type="submit" id="submit">
                 Get package
               </button>
             </div>
           </div>
+
+          <!-- Message -->
+          <p id="message" align="center"></p>
         </form>
       </div> <!-- form-container -->
     </div> <!-- main-container -->
