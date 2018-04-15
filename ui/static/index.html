@@ -141,8 +141,40 @@
         Material design components JS
     -->
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="js/vendor/plugin/jquery.fileDownload.js"></script>
     <script>
       mdc.autoInit();
+
+      (function () {
+        $(document).on('submit', '#package-generator-form', function (e) {
+          const change_submit_button_state = function (disabled) {
+            $('#submit').prop('disabled', disabled);
+          };
+
+          const file_download_settings = {
+            data: $(this).serialize(),
+            httpMethod: 'POST',
+            checkInterval: 1000,
+            prepareCallback: function (url) {
+              change_submit_button_state(true);
+              $('#message').html( '<img alt="Progress spinner" src="img/progress-spinner.gif"> <p>Please wait, package is being generated ...</p>')
+            },
+            successCallback: function (url) {
+              change_submit_button_state(false);
+              $('#message').html('Package generated successfully.')
+            },
+            failCallback: function (responseHtml, url, error) {
+              change_submit_button_state(false);
+              $('#message').html(`Error occured while generating the offline package!<br>Error: ${error}`);
+              // console.log(responseHtml);
+            }
+          };
+
+          $.fileDownload($(this).prop('action'), file_download_settings);
+          e.preventDefault(); //otherwise a normal form submit would occur
+        });
+      })();
     </script>
   </body>
 </html>

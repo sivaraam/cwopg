@@ -49,6 +49,15 @@ app.post ('/custom-enwiki-package.zim', function (request, response) {
 	const package_callback = function (output_file) {
 		const file_name = 'custom-enwiki-package.zim';
 
+		/*
+		 * Headers to be set for jquery.downloadFile to work correctly.
+		 * The jquery.downloadFile plugin is used to request for the file and
+		 * and while it is being generated it helps us to give a better UX
+		 * to the user.
+		 */
+		response.set('Set-Cookie', 'fileDownload=true; path=/');
+		response.set('Cache-Control', 'max-age=60, must-revalidate');
+
 		response.download (output_file, file_name, download_options, function (err) {
 			if (err) {
 				console.log (err);
