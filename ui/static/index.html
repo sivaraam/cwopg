@@ -31,7 +31,7 @@
 
     <div class="main-container">
       <div class="form-container">
-        <form action="/custom-enwiki-package.zim" method="POST" id="package-generator-form">
+        <form action="/generate-package" method="POST" id="package-generator-form">
           <div class="form-item">
             <div class="form-item-input">
               <div class="mdc-text-field mdc-text-field--upgraded mdc-ripple-upgraded" data-mdc-auto-init="MDCTextField">
@@ -141,8 +141,39 @@
         Material design components JS
     -->
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
     <script>
       mdc.autoInit();
+
+      (function () {
+        $(document).on('submit', '#package-generator-form', function (e) {
+          const change_submit_button_state = function (disabled) {
+            $('#submit').prop('disabled', disabled);
+          };
+
+          change_submit_button_state(true);
+          $('#message').html('<img alt="Progress spinner" src="img/progress-spinner.gif"> <p>Please wait, package is being generated ...</p>');
+
+          $.ajax({
+            type: 'POST',
+            data: $(this).serialize(),
+            url: $(this).prop('action'),
+            success: function package_generated (data) {
+              $('#message').html('Package successfully generated!');
+              console.log(data);
+              window.open('/download-package', '_self');
+            },
+            error: function error_occured(jqXHR, text_status, error_thrown) {
+              $('#message').html(`Error occured while generating package.<br>Status: ${text_status}; Error: ${error_thrown}`);
+            },
+            complete: function request_complete (jqXHR, text_status) {
+              change_submit_button_state(false);
+              console.log(`Request complete status: ${text_status}`)
+            }
+          });
+          e.preventDefault(); //otherwise a normal form submit would occur
+        });
+      })();
     </script>
   </body>
 </html>
