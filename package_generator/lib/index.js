@@ -135,11 +135,11 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
 };
 
 exports.generateZimPackage = generateZimPackage;
-/*generateZimPackage(
-    '../articleList',
-    '../public/out',
-    {},
-    function zimOpFile(file){
-        console.log(file);
-    }
-);*/
+// generateZimPackage(
+//     '../articleList',
+//     '../public/out',
+//     {},
+//     function zimOpFile(file){
+//         console.log(file);
+//     }
+// );

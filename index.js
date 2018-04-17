@@ -89,6 +89,6 @@ const generatePackage = function (params, packageCallback) {
 };
 
 exports.generatePackage = generatePackage;
-/*generatePackage ({userQuery: 'abdul kalam'}, function(outputFile) {
-    console.log('Package callback:', outputFile);
-});*/
+// generatePackage ({userQuery: 'abdul kalam'}, function(outputFile) {
+//     console.log('Package callback:', outputFile);
+// });

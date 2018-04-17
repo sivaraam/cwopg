@@ -66,10 +66,10 @@ const generateArticleList = function (categories, articleListFile, callback) {
 };
 
 exports.generateArticleList = generateArticleList;
-/*generateArticleList(
-    ['Sudoku', 'Bullfighting'],
-    '../articleList',
-    function () {
-        console.log("Successfully generated article list.");
-    }
-);*/
+// generateArticleList(
+//     ['Sudoku', 'Bullfighting'],
+//     '../articleList',
+//     function () {
+//         console.log("Successfully generated article list.");
+//     }
+// );

@@ -165,3 +165,11 @@ const generateCategoryList =
     };
 
 exports.generateCategoryList = generateCategoryList;
+// generateCategoryList(
+//     'abdul kalam',
+//     '../enwiki-cats-bigger-preprocessed',
+//     function (categories){
+//         console.log(`Got ${categories.length} relevant categories`);
+//         console.log(categories);
+//     }
+// );

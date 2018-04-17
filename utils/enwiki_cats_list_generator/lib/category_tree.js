@@ -82,3 +82,4 @@ const generate_category_list_files = function (cats_file) {
 };
 
 module.exports = generate_category_list_files;
+// generate_category_list_files ('./enwiki-cats-mwapi');
