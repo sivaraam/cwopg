@@ -89,6 +89,6 @@ const generate_package = function (params, package_callback) {
 };
 
 exports.generate_package = generate_package;
-/*generate_package ('chess', function(output_file) {
-    console.log('Package callback:', output_file);
-});*/
+// generate_package ({user_query: 'chess'}, function(output_file) {
+//     console.log('Package callback:', output_file);
+// });

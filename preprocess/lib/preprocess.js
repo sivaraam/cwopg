@@ -29,3 +29,4 @@ const preprocess = function (string) {
 };
 
 module.exports = preprocess;
+// console.log(preprocess('A.P.J.Abdul kalam'));

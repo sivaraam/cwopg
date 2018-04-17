@@ -146,3 +146,7 @@ const generate_category_list = function (user_query, enwiki_cats_file, categorie
 };
 
 exports.generate_category_list = generate_category_list;
+// generate_category_list('abdul kalam', '../enwiki-cats-bigger-preprocessed', function (categories){
+//     console.log(`Successfully got ${categories.length} relevant categories`);
+//     console.log(categories);
+// });

@@ -67,3 +67,6 @@ const generate_article_list = function (categories, callback) {
 }
 
 exports.generate_article_list = generate_article_list;
+// generate_article_list(['Sudoku', 'Bullfighting'], function (articles) {
+//     console.log(`Successfully got ${articles.length} articles.`);
+// });
