@@ -34,6 +34,10 @@
 			e.fatal_error('No categories found.');
 		}
 
+		/*** DEBUG ***/
+		fs.writeFileSync('./category-list-debug', categories.join('\n'));
+		console.log('Successfully wrote the list of categories for debug.');
+
 		article_list_generator.generate_article_list(categories,
 		function articles_generated (articles) {
 			if (articles.length === 0) {
