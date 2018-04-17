@@ -59,6 +59,12 @@ app.post ('/generate-package', function (request, response) {
     }
 
     const package_callback = function (output_file) {
+        /*
+         * FIXME: Avoid using the full filesystem as value for the cookie.
+         * May lead to security issues.
+         *
+         * #security
+         */
         response.cookie(file_path_cookie_id, output_file, { httpOnly: true });
         response.set('Cache-Control', 'max-age=60, must-revalidate');
         response.set('Content-Type', 'text/plain');
