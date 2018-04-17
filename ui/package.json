@@ -4,6 +4,7 @@
   "description": "The user interface sub-module of the \"Customised Wikipedia Offline Package Generator(cwopg)\" module.",
   "main": "app.js",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "cwopg-ui-static": "file:static",
     "express": "^4.16.3"
   },
