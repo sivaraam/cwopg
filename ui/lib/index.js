@@ -1,5 +1,15 @@
 'use strict'
 
+/**
+ * The program that corresponds to the server. Listens for HTTP requests on a
+ * pre-sepecified port and consequently generates the corresponding package and
+ * responds with success when generation has been successfully completed.
+ *
+ * Returns the generated as a response for an upcoming request to download the
+ * pakage.
+ *
+ * This has not been done the right way, yet. See FIXME(s) below.
+ */
 const express = require ('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
