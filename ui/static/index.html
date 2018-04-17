@@ -155,6 +155,13 @@
           $('#message').html('<img alt="Progress spinner" src="img/progress-spinner.gif"> <p>Please wait, package is being generated ...</p>');
 
           $.ajax({
+            /*
+             * FIXME: enable the server to allow polling of the package
+             * generation status thus helping to avoid connection timeouts.
+             *
+             * For more info, see FIXME in 'ui/lib/index.js'
+             */
+            timeout: 0,
             type: 'POST',
             data: $(this).serialize(),
             url: $(this).prop('action'),

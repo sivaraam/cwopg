@@ -85,10 +85,27 @@ app.get ('/download-package', function (request, response) {
 	}
 });
 
-app.listen (port, function (err) {
+const server = app.listen (port, function (err) {
 	if (err) {
 		return console.error("Something bad happened!", err);
 	}
 
 	console.log (`Server is listening on port ${port}`);
 });
+
+/*
+ * FIXME: Make the clients poll for completion of package generation thus
+ * avoiding connection timeouts.
+ *
+ * Unfortuntaely, the requests take a long time to complete due to the initial
+ * implementation without awareness of the fact that the response for each
+ * request shouldn't be delayed for too long. This resulted in the connections
+ * getting closed after a default timeout which in turn resulted in HTTP clients
+ * (typically browsers) sending retries for the requests which received no
+ * response. Thus the application reeived another request before the previous
+ * was completed.
+ *
+ * Temporarily stop-gap the issue by turning off timeouts in the incoming
+ * connections.
+ */
+server.setTimeout(0);
