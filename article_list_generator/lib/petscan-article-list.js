@@ -97,4 +97,4 @@ const generateArticleList = function (categories, callback) {
     }
 };
 
-module.exports.generateArticleList = generateArticleList;
+exports.generateArticleList = generateArticleList;

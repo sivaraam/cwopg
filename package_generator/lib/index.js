@@ -134,7 +134,7 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
     });
 };
 
-module.exports.generateZimPackage = generateZimPackage;
+exports.generateZimPackage = generateZimPackage;
 /*generateZimPackage(
     '../articleList',
     '../public/out',

@@ -65,7 +65,7 @@ const generateArticleList = function (categories, articleListFile, callback) {
     });
 };
 
-module.exports.generateArticleList = generateArticleList;
+exports.generateArticleList = generateArticleList;
 /*generateArticleList(
     ['Sudoku', 'Bullfighting'],
     '../articleList',

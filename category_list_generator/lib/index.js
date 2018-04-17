@@ -164,4 +164,4 @@ const generateCategoryList =
         );
     };
 
-module.exports.generateCategoryList = generateCategoryList;
+exports.generateCategoryList = generateCategoryList;
