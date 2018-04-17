@@ -120,7 +120,7 @@ function (article_list_file, zim_output_dir, package_options, callback) {
     });
 };
 
-module.exports.generate_zim_package = generate_zim_package;
+exports.generate_zim_package = generate_zim_package;
 /*generate_zim_package('../articleList', '../public/out', function zim_op_file(file){
     console.log(file);
 });*/

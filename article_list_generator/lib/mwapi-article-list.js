@@ -66,4 +66,4 @@ const generate_article_list = function (categories, callback) {
     });
 }
 
-module.exports.generate_article_list = generate_article_list;
+exports.generate_article_list = generate_article_list;

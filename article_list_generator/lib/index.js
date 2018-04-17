@@ -59,7 +59,7 @@ const generate_article_list = function (categories, article_list_file, callback)
     });
 };
 
-module.exports.generate_article_list = generate_article_list;
+exports.generate_article_list = generate_article_list;
 /*generate_article_list(['Sudoku', 'Bullfighting'], '../articleList', function () {
     console.log("Successfully generated article list.");
 });*/

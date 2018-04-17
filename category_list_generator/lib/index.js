@@ -145,4 +145,4 @@ const generate_category_list = function (user_query, enwiki_cats_file, categorie
     });
 };
 
-module.exports.generate_category_list = generate_category_list;
+exports.generate_category_list = generate_category_list;
