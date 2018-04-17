@@ -1,4 +1,9 @@
 /**
+ * This program generates the article list using PetScan (a tool hosted at
+ * Wikimedia tool forge).
+ */
+
+/**
  * The library required for manipulating HTTP GET requests
  * and it's response.
  */
