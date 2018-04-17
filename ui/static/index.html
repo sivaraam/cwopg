@@ -165,6 +165,7 @@
             type: 'POST',
             data: $(this).serialize(),
             url: $(this).prop('action'),
+            dataType: 'text',
             success: function package_generated (data) {
               $('#message').html('Package successfully generated!');
               console.log(data);
