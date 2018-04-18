@@ -50,7 +50,6 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
             const execaOptions = { localDir: __dirname };
             const npmMwofflinerCmdParams = [];
             var npmMwoffliner = null;
-            var outFilePath = '';
 
             /**
              * Get the required 'mwoffliner' configuration that
@@ -101,35 +100,11 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
                  */
                 const outFilePathExtractRE = /ZIM file built at (.*\.zim)/;
 
-                if (result.stdout) {
-                    /*
-                     * The output file path is at index 1 of the array
-                     * returned by exec().
-                     */
-                    outFilePath = outFilePathExtractRE.exec(result.stdout)[1];
-                }
-                else {
-                    const currDate = new Date();
-                    const currYear = currDate.getFullYear();
-                    const currMonth = currDate.getMonth()+1;
-                    const currMonthStr = (currMonth<10) ?
-                                         `0${currMonth}` :
-                                         `${currMonth}`;
-
-                    /*
-                     * We turned off stdout so fall back to generating
-                     * heuristic output file path.
-                     *
-                     * The file name is expected to be in the following format:
-                     *
-                     * <filePrefix>_articlelist_<year>-<month>.zim
-                     */
-                    const outputFileName = filePrefix     + '_' +
-                                            'articlelist' + '_' +
-                                            currYear      + '-' +
-                                            currMonthStr  + '.zim';
-                    outFilePath = path.join(zimOutputDir, outputFileName);
-                }
+                /*
+                 * The output file path is at index 1 of the array
+                 * returned by exec().
+                 */
+                const outFilePath = outFilePathExtractRE.exec(result.stdout)[1];
 
                 callback(outFilePath);
             });
