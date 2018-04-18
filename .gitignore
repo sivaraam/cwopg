@@ -9,8 +9,5 @@ article-list
 # Ignore the node_modules directory in various modules
 node_modules
 
-# Dependencies
-node_modules
-
 # Generated files
 public
