@@ -21,7 +21,7 @@ const app = express();
 app.set('port', 3000);
 app.set('filePathCookieId', 'cwopg-zim-file-path');
 
-app.use( express.static( path.join(__dirname, '../static') ) );
+app.use( express.static( path.join(__dirname, '../web') ) );
 
 /*
  * Parses the text as URL encoded data (which is how browsers tend to send
