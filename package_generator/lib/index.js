@@ -69,6 +69,9 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
             });
 
             /**
+             * FIXME: Help change `mwoffliner.execute()` so that the caller
+             * could know when the file generation gets completed.
+             *
              * The JS API of mwoffliner is not usable as the
              * 'mwoffliner.execute()', which is used to generate the ZIM
              * package, does a lot of things asynchronously and thus returns
