@@ -98,7 +98,7 @@ app.get ('/download-package', function (request, response) {
     {
         const filePath = request.cookies[cookieId];
 
-        response.cookie(cookieId, '');
+        response.clearCookie(cookieId);
         response.download (filePath, fileName, downloadOptions, function (err) {
             if (err) {
                 console.log (err);
