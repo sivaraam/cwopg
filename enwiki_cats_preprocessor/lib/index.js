@@ -1,75 +1,99 @@
 'use strict';
 
 /**
- * Preprocess a file containing a list of enwiki categories to make it suitable for
- * searching.
+ * Preprocess a file containing a list of enwiki categories to make it
+ * suitable for searching.
  */
 
-(function () {
-	const fs = require('fs');
-	const preprocess = require('../../preprocess');
-	const e = require('../../lib/error');
+const fs = require('fs');
+const preprocess = require('../../preprocess');
+const e = require('../../lib/error');
 
-	const read_enwiki_cats_file = function (enwiki_cats_file, callback) {
-		const read_options = { encoding: 'utf-8' };
+const readEnwikiCatsFile = function (enwikiCatsFile, callback) {
+    const readOptions = { encoding: 'utf8' };
 
-		fs.readFile(enwiki_cats_file, read_options, function enwiki_cats_read_callback (err, data) {
-			if (err) {
-				if (err.code == 'ENOENT') {
-					e.fatal_error(`enwiki category list file ${enwiki_cats_file} missing.`);
-				}
-				else {
-					e.fatal_error(err);
-				}
-			}
-			else {
-				const enwiki_cats = data.split('\n')
-				                        .filter(Boolean);  // to ignore empty lines
+    fs.readFile(
+        enwikiCatsFile,
+        readOptions,
+        function enwikiCatsReadCallback (err, data) {
+            if (err) {
+                if (err.code == 'ENOENT') {
+                    e.fatalError(
+                        `Missing file to preprocess: ${enwikiCatsFile}`
+                    );
+                }
+                else {
+                    e.fatalError(err);
+                }
+            }
+            else {
+                /* Ignore empty lines in data for sanity. */
+                const enwikiCats = data.split('\n')
+                                       .filter(Boolean);
 
-				/* sanity check */
-				if (enwiki_cats == null) {
-					return null;
-				}
+                /* sanity check */
+                if (enwikiCats == null) {
+                    return null;
+                }
 
-				console.log(`Successfully read ${enwiki_cats.length} categories.`);
+                console.log(
+                    `Successfully read ${enwikiCats.length} categories.`
+                );
 
-				callback(enwiki_cats);
-			}
-		});
-	};
+                callback(enwikiCats);
+            }
+        }
+    );
+};
 
-	const preprocess_enwiki_cats_file = function (enwiki_cats_file, preprocessed_enwiki_cats_file) {
-		read_enwiki_cats_file(enwiki_cats_file, function read_complete_callback (enwiki_cats_arr) {
-			const enwiki_cats_preprocessed = [];
-			const write_options = { encoding: 'utf-8' };
-			var enwiki_cats_write_stream = null;
+const preprocessEnwikiCatsFile =
+    function (enwikiCatsFile, preprocessedEnwikiCatsFile) {
+        readEnwikiCatsFile(
+            enwikiCatsFile,
+            function readCompleteCallback (enwikiCatsArr) {
+                const enwikiCatsPreprocessed = [];
+                const writeOptions = { encoding: 'utf-8' };
+                var enwikiCatsWriteStream = null;
 
-			if (enwiki_cats_arr === null) {
-				e.fatal_error(`enwiki category list file ${enwiki_cats_file} does not exist`);
-			}
+                if (enwikiCatsArr === null) {
+                    e.fatalError('Invalid parameter for enwiki cats file');
+                }
 
-			if (enwiki_cats_arr.length === 0) {
-				e.fatal_error('No categories found in enwiki category list file!');
-			}
+                if (enwikiCatsArr.length === 0) {
+                    e.fatalError(`No categories found in ${enwikiCatsFile}`);
+                }
 
-			/*
-			 * Preprocess the categories
-			 */
-			enwiki_cats_arr.forEach (function (cat) {
-				enwiki_cats_preprocessed.push(preprocess (cat).join(" "));
-			});
+                /*
+                 * Preprocess the categories
+                 */
+                enwikiCatsArr.forEach (function (cat) {
+                    enwikiCatsPreprocessed.push(preprocess (cat).join(' '));
+                });
 
-			/*
-			 * Write back the preprocessed output to destination
-			 */
-			enwiki_cats_write_stream = fs.createWriteStream(preprocessed_enwiki_cats_file, write_options);
-			for (var i=0; i<enwiki_cats_arr.length; i++) {
-				enwiki_cats_write_stream.write(enwiki_cats_arr[i]+';'+enwiki_cats_preprocessed[i]+'\n');
-			}
+                /*
+                 * Write back the preprocessed output to destination
+                 */
+                enwikiCatsWriteStream =
+                    fs.createWriteStream(
+                        preprocessedEnwikiCatsFile,
+                        writeOptions
+                    );
 
-			console.log ('Successfully preprocessed the enwiki category list file.');
-		});
-	};
+                    for (var i=0; i<enwikiCatsArr.length; i++) {
+                        enwikiCatsWriteStream.write(
+                            enwikiCatsArr[i] + ';' +
+                            enwikiCatsPreprocessed[i] + '\n'
+                        );
+                    }
 
-	preprocess_enwiki_cats_file('../enwiki-cats-bigger', '../enwiki-cats-bigger-preprocessed');
-})();
+                    console.log (
+                        'Successfully preprocessed the category list file.'
+                    );
+            }
+        );
+    };
+
+preprocessEnwikiCatsFile(
+    '../enwiki-cats-bigger',
+    '../enwiki-cats-bigger-preprocessed'
+);

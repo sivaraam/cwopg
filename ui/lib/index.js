@@ -1,96 +1,120 @@
 'use strict'
 
+/**
+ * The program that corresponds to the server. Listens for HTTP requests on a
+ * pre-sepecified port and consequently generates the corresponding package and
+ * responds with success when generation has been successfully completed.
+ *
+ * Returns the generated as a response for an upcoming request to download the
+ * pakage.
+ *
+ * This has not been done the right way, yet. See FIXME(s) below.
+ */
 const express = require ('express');
-const body_parser = require('body-parser');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const package_generator_orchestrator = require('../..');
+const packageGeneratorOrchestrator = require('../..');
 const path = require ('path');
 const app = express();
-const port = 3000;
-const file_path_cookie_id = 'cwopgZimFilePath';
 
-app.use( express.static( path.join(__dirname, '../static') ) );
+/* Store constant settings in the app itself */
+app.set('port', 3000);
+app.set('filePathCookieId', 'cwopg-zim-file-path');
 
-/** bodyParser.urlencoded(options)
- * Parses the text as URL encoded data (which is how browsers tend to send form data from regular forms set to POST)
- * and exposes the resulting object (containing the keys and values) on req.body
+app.use( express.static( path.join(__dirname, '../web') ) );
+
+/*
+ * Parses the text as URL encoded data (which is how browsers tend to send
+ * form data from regular forms set to POST) and exposes the resulting object
+ * (containing the keys and values) on req.body
  */
 app.use(
-  body_parser.urlencoded({
+  bodyParser.urlencoded({
     extended: true
   })
 );
 
-/**bodyParser.json(options)
+/*
  * Parses the text as JSON and exposes the resulting object on req.body.
  */
-app.use(body_parser.json());
+app.use(bodyParser.json());
 
 app.use(cookieParser());
 
 app.get ('/', function (request, response) {
-	console.log (request.url);
+    console.log (request.url);
 
-	response.render ('index.html', function (err, html) {
-		if (err) {
-			console.log (err);
-		} else {
-			response.send (html);
-			console.log ('Successfully sent index.');
-		}
-	})
+    response.render ('index.html', function (err, html) {
+        if (err) {
+            console.log (err);
+        } else {
+            response.send (html);
+            console.log ('Successfully sent index.');
+        }
+    })
 });
 
 app.post ('/generate-package', function (request, response) {
-	const params = {
-		user_query: request.body.keywords,
-		nopic: request.body.nopic !== undefined,
-		novid: request.body.novid !== undefined
-	}
+    const params = {
+        userQuery: request.body.keywords,
+        nopic: request.body.nopic !== undefined,
+        novid: request.body.novid !== undefined
+    }
 
-	const package_callback = function (output_file) {
-		response.cookie(file_path_cookie_id, output_file, { httpOnly: true });
-		response.set('Cache-Control', 'max-age=60, must-revalidate');
-		response.set('Content-Type', 'text/plain');
-		response.status(200).send('Success!');
-	};
+    const packageCallback = function (outputFile) {
+        /*
+         * FIXME: Avoid using the full filesystem as value for the cookie.
+         * May lead to security issues.
+         *
+         * #security
+         */
+        response.cookie(
+            app.get('filePathCookieId'),
+            output_file,
+            { httpOnly: true }
+        );
+        response.set('Cache-Control', 'max-age=60, must-revalidate');
+        response.set('Content-Type', 'text/plain');
+        response.status(200).send('Success!');
+    };
 
-	/* Generate the offline package for the obtained keywords */
-	package_generator_orchestrator.generate_package (params,
-	                                                 package_callback);
+    /* Generate the offline package for the obtained keywords */
+    packageGeneratorOrchestrator.generatePackage (params,
+                                                 packageCallback);
 });
 
 app.get ('/download-package', function (request, response) {
-	const download_options = {
-		dotfiles: 'deny',
-		headers: {
-			'x-timestamp': Date.now(),
-			'x-sent': true
-		}
-	};
-	const file_name = 'custom-enwiki-package.zim';
+    const downloadOptions = {
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true
+        }
+    };
+    const fileName = 'custom-enwiki-package.zim';
+    const cookieId = app.get('filePathCookieId');
 
-	if (request.cookies[file_path_cookie_id])
-	{
-		const file_path = request.cookies[file_path_cookie_id];
+    if (request.cookies[cookieId])
+    {
+        const filePath = request.cookies[cookieId];
 
-		response.cookie(file_path_cookie_id, '');
-		response.download (file_path, file_name, download_options, function (err) {
-			if (err) {
-				console.log (err);
-			} else {
-				console.log ('Sent:', file_name);
-			}
-		});
-	}
+        response.cookie(cookieId, '');
+        response.download (filePath, fileName, downloadOptions, function (err) {
+            if (err) {
+                console.log (err);
+            } else {
+                console.log ('Sent:', fileName);
+            }
+        });
+    }
 });
 
-const server = app.listen (port, function (err) {
-	if (err) {
-		return console.error("Something bad happened!", err);
-	}
+const server = app.listen (app.get('port'), function (err) {
+    if (err) {
+        return console.error("Something bad happened!", err);
+    }
 
-	console.log (`Server is listening on port ${port}`);
+    console.log (`Server is listening on port ${app.get('port')}`);
 });
 
 /*
@@ -105,7 +129,7 @@ const server = app.listen (port, function (err) {
  * response. Thus the application reeived another request before the previous
  * was completed.
  *
- * Temporarily stop-gap the issue by turning off timeouts in the incoming
+ * Temporarily stopGap the issue by turning off timeouts in the incoming
  * connections.
  */
 server.setTimeout(0);

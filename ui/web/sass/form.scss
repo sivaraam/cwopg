@@ -10,5 +10,13 @@
   form {
     width: 100%;
     height: 100%;
+
+    .form-item {
+      padding: $form-item-padding;
+
+      .form-item-input {
+        padding: $form-item-input-padding;
+      }
+    }
   }
 }
