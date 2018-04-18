@@ -11,3 +11,9 @@ node_modules
 
 # Generated files
 public
+
+# Ignore the debug file
+category-list-debug
+
+# Ignore the file used as input by a module (category_list_generator)
+enwiki-cats-bigger-preprocessed
