@@ -39,8 +39,13 @@ const generateArticleList = function (categories, articleListFile, callback) {
     }
 
     /*** DEBUG ***/
-    fs.writeFileSync('./category-list-debug', categories.join('\n'));
-    console.log('Successfully wrote the list of categories for debug.');
+     const categoryListDebugFile = './category-list-debug';
+     fs.writeFileSync(categoryListDebugFile, categories.join('\n'));
+     console.log(
+    	 'Successfully wrote the list of categories for debug:',
+    	 categoryListDebugFile
+     );
+
 
     articleListGenerator.generateArticleList(categories,
     function articlesGenerated (articles) {
