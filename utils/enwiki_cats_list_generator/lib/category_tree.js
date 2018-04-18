@@ -9,8 +9,8 @@
  * The library required to interface with the MediaWiki web service API provided
  * by the Wikimedia Foundation.
  *
- * The API is used to acquire the information required for the working of this module.
- * The information required includes:
+ * The API is used to acquire the information required for the working
+ * of this module. The information required includes:
  *
  *  - list of categories
  */
@@ -48,8 +48,8 @@ const generate_category_list_files = function (cats_file) {
      * Dumps the names of the categories present in the category tree response
      * obtained from the API to the given file.
      *
-     * The response is currently in the HTML format with each name identified by a
-     * specific class.
+     * The response is currently in the HTML format with each name identified
+     * by a specific class.
      */
     const mw_api_client_cat_tree_callback = function (response) {
         if (response.html === null)

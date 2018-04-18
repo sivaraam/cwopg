@@ -33,18 +33,25 @@ function (petscanJsonResponse, articleList) {
 };
 
 /**
-* Generate the article list file by identifying the set of articles in the categories
-* or its children and invoke the callback after successful completion.
-*/
+ * Generate the article list file by identifying the set of articles in the
+ * categories or its children and invoke the callback after
+ * successful completion.
+ */
 const generateArticleList = function (categories, callback) {
     const heuristicPerRequestCats = 120;
-    const totalCategorySplits = Math.ceil(categories.length/heuristicPerRequestCats);
+    const totalCategorySplits =
+                        Math.ceil(categories.length / heuristicPerRequestCats);
     const categorySplits = [];
     const articles = [];
     var currCategorySplit = 0;
 
     for (var split=0; split<totalCategorySplits; split++) {
-        categorySplits.push(categories.slice(split*heuristicPerRequestCats, (split+1)*heuristicPerRequestCats));
+        categorySplits.push(
+            categories.slice(
+                split * heuristicPerRequestCats,
+                (split + 1) * heuristicPerRequestCats
+            )
+        );
     }
 
     for (var split=0; split<categorySplits.length; split++) {
@@ -53,29 +60,35 @@ const generateArticleList = function (categories, callback) {
         console.log(`Requesting the article list for the split: ${split+1}`);
 
         /*
-         * Do the HTTP request to PetScan to get the list of articles for the given
-         * set of categories.
+         * Do the HTTP request to PetScan to get the list of articles
+         * for the given set of categories.
          */
-        request.get({
-            url: petscanUrl,
-            qs: petscanParams
-        }, function (error, response, body) {
-            if (error != null) {
-                e.fatalError(`error: ${error}`);
-            }
-            if (response && response.statusCode === 200) {
-                appendArticleListFromPetscanRes(body, articles);
-
-                currCategorySplit++;
-                if (currCategorySplit === totalCategorySplits) {
-                    callback (articles);
+        request.get(
+            {
+                url: petscanUrl,
+                qs: petscanParams
+            },
+            function (error, response, body) {
+                if (error != null) {
+                    e.fatalError(`error: ${error}`);
                 }
-            } else if (!response) {
-                e.fatalError('No response received from PetScan!');
-            } else {
-                e.fatalError(`PetScan request failed with status code: ${response.statusCode}\n${response.body}`);
+                if (response && response.statusCode === 200) {
+                    appendArticleListFromPetscanRes(body, articles);
+
+                    currCategorySplit++;
+                    if (currCategorySplit === totalCategorySplits) {
+                        callback (articles);
+                    }
+                } else if (!response) {
+                    e.fatalError('No response received from PetScan!');
+                } else {
+                    e.fatalError(
+                     `PetScan request failed with status code: ` +
+                     `${res.statusCode}\n${response.body}`
+                    );
+                }
             }
-        });
+        );
     }
 };
 

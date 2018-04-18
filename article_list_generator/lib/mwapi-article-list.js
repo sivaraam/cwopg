@@ -15,7 +15,7 @@ const getArticlesForCategoryIndex = function (categories, index, callback) {
     const currCat = categories[index];
     const maxDepth = 250;
 
-    client.getPagesInCategory(currCat.title, function(err, response) {
+    client.getPagesInCategory(currCat.title, function (err, response) {
         if (err) {
             e.fatalError(err);
         }

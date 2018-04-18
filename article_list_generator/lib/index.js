@@ -11,17 +11,22 @@ const articleListGenerator = require('./petscan-article-list');
 const generateArticleListFile = function (articles, articleListFile, callback) {
     const writeOptions = { encoding: 'utf-8' };
 
-    console.log(`About to generate the article list file (${articleListFile}).`);
+    console.log('About to generate article list file:', articleListFile);
 
-    fs.writeFile(articleListFile, articles.join('\n'), writeOptions, function(err) {
-        if(err) {
-            throw err;
+    fs.writeFile(
+        articleListFile,
+        articles.join('\n'),
+        writeOptions,
+        function (err) {
+            if(err) {
+                throw err;
+            }
+            else {
+                console.log('Generated the article list file.');
+                callback();
+            }
         }
-        else {
-            console.log('Generated the article list file.');
-            callback();
-        }
-    });
+    );
 };
 
 const generateArticleList = function (categories, articleListFile, callback) {
@@ -43,7 +48,7 @@ const generateArticleList = function (categories, articleListFile, callback) {
             e.fatalError('No articles found for the given category.');
         }
 
-        console.log(`Successfully got ${articles.length} articles for the given set of categories.`);
+        console.log(`Successfully got ${articles.length} articles.`);
 
         /*
          * Remove the duplicate articles from the list
@@ -53,13 +58,18 @@ const generateArticleList = function (categories, articleListFile, callback) {
                 return self.indexOf(value) === index;
             });
 
-        console.log(`Removed ${articles.length - dedupedArticles.length} duplicates.`);
+        const duplicates = articles.length - dedupedArticles.length;
+        console.log(`Removed ${duplicates} duplicates.`);
 
         generateArticleListFile(dedupedArticles, articleListFile, callback);
     });
 };
 
 module.exports.generateArticleList = generateArticleList;
-/*generateArticleList(['Sudoku', 'Bullfighting'], '../articleList', function () {
-    console.log("Successfully generated article list.");
-});*/
+/*generateArticleList(
+    ['Sudoku', 'Bullfighting'],
+    '../articleList',
+    function () {
+        console.log("Successfully generated article list.");
+    }
+);*/

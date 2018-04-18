@@ -29,15 +29,20 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
         return options;
     };
 
-    /* Generate the ZIM file only if the article list file exists and is readable */
+    /*
+     * Generate the ZIM file only if the article list file
+     * exists and is readable
+     */
     fs.access(articleListFile, fs.constants.ROK, function (err) {
         if (err) {
             if (err.code == 'ENOENT') {
-                e.fatalError(`Article list file '${articleListFile}' missing.`);
+                e.fatalError(`Missing article list file: ${articleListFile}`);
             }
             else {
                 console.log(err);
-                e.fatalError(`Unable to read the article list file '${articleListFile}'`);
+                e.fatalError(
+                    `Could not read the article list file: ${articleListFile}`
+                );
             }
         }
         else {
@@ -45,10 +50,11 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
             const execaOptions = { localDir: __dirname };
             const npmMwofflinerCmdParams = [];
             var npmMwoffliner = null;
-            var outputFilePath = '';
+            var outFilePath = '';
 
             /**
-             * Get the required 'mwoffliner' configuration that doesn't change often.
+             * Get the required 'mwoffliner' configuration that
+             * doesn't change often.
              */
             const parameters = require('../config/package_generator.json');
             parameters.articleList = articleListFile;
@@ -63,16 +69,22 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
             });
 
             /**
-             * The JS API of mwoffliner is not usable as the 'mwoffliner.execute()',
-             * which is used to generate the ZIM package, does a lot of things
-             * asynchronously and thus returns before the corresponding ZIM file is
-             * actually generated. Further, there is no API exposed to actually know
-             * when the file generation gets completed.
+             * The JS API of mwoffliner is not usable as the
+             * 'mwoffliner.execute()', which is used to generate the ZIM
+             * package, does a lot of things asynchronously and thus returns
+             * before the corresponding ZIM file is actually generated.
+             * Further, there is no API exposed to actually know when the file
+             * generation gets completed.
              *
-             * So, temporarily work around this by using the command line binary of
-             * mwoffliner which gets installed into the '$(npm bin)' folder.
+             * So, temporarily work around this by using the command line
+             * binary of mwoffliner which gets installed into the '$(npm bin)'
+             * folder.
              */
-            npmMwoffliner = execa('mwoffliner', npmMwofflinerCmdParams, execaOptions);
+            npmMwoffliner = execa(
+                'mwoffliner',
+                npmMwofflinerCmdParams,
+                execaOptions
+            );
 
             npmMwoffliner.stdout.pipe(process.stdout);
             npmMwoffliner.stderr.pipe(process.stderr);
@@ -81,17 +93,17 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
                  * Regex to extract the filename from the 'verbose' output
                  * of mwoffliner.
                  *
-                 * FIXME: This is highly dependant on the output which might change at
-                 * anytime but there's no better way for now.
+                 * FIXME: This is highly dependant on the output which might
+                 * change at anytime but there's no better way for now.
                  */
-                const outputFilePathExtractRegex = /ZIM file built at (.*\.zim)/;
+                const outFilePathExtractRE = /ZIM file built at (.*\.zim)/;
 
                 if (result.stdout) {
                     /*
                      * The output file path is at index 1 of the array
                      * returned by exec().
                      */
-                    outputFilePath = outputFilePathExtractRegex.exec(result.stdout)[1];
+                    outFilePath = outFilePathExtractRE.exec(result.stdout)[1];
                 }
                 else {
                     const currDate = new Date();
@@ -109,18 +121,25 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
                      *
                      * <filePrefix>_articlelist_<year>-<month>.zim
                      */
-                    const outputFileName = filePrefix + '_' + 'articlelist' + '_' +
-                                           currYear + '-' + currMonthStr + '.zim';
-                    outputFilePath = path.join(zimOutputDir, outputFileName);
+                    const outputFileName = filePrefix     + '_' +
+                                            'articlelist' + '_' +
+                                            currYear      + '-' +
+                                            currMonthStr  + '.zim';
+                    outFilePath = path.join(zimOutputDir, outputFileName);
                 }
 
-                callback(outputFilePath);
+                callback(outFilePath);
             });
         }
     });
 };
 
 module.exports.generateZimPackage = generateZimPackage;
-/*generateZimPackage('../articleList', '../public/out', {}, function zimOpFile(file){
-    console.log(file);
-});*/
+/*generateZimPackage(
+    '../articleList',
+    '../public/out',
+    {},
+    function zimOpFile(file){
+        console.log(file);
+    }
+);*/

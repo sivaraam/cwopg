@@ -14,7 +14,7 @@ const preprocess = require('../../preprocess');
  * corresponding searchable elements present in a preprocessed file. Each line
  * is expected to said to be in the following format:
  *
- *     <CatgoryID><PropertySep><CategorySearchableElem><ElemSep><CategorySearchableElem>...
+ *  <CatID><Separator1><CatSearchableElem><Separator2><CatSearchableElem>...
  *
  * Returns an array of objects which contain the 'id' and 'elems' properties.
  * The 'id' property is a string which contains the unique identifier for the
@@ -26,45 +26,60 @@ const preprocess = require('../../preprocess');
  */
 const readEnwikiCats = function (enwikiCatsFile, callback) {
     const readOptions = { encoding: 'utf-8' };
-    console.log(`About to read the enwiki category list file (${enwikiCatsFile}).`);
+    console.log(
+        'About to read the enwiki category list file:',
+        enwikiCatsFile
+    );
 
-    fs.readFile(enwikiCatsFile, readOptions, function enwikiCatsPpReadCallback (err, data) {
-        if (err) {
-            if (err.code == 'ENOENT') {
-                e.fatalError(`enwiki category list file ${enwikiCatsFile} missing.`);
+    fs.readFile(
+        enwikiCatsFile,
+        readOptions,
+        function enwikiCatsPpReadCallback (err, data) {
+            if (err) {
+                if (err.code == 'ENOENT') {
+                    e.fatalError(
+                        `Missing enwiki category list file: ` +
+                        `${enwikiCatsFile}`
+                    );
+                }
+                else {
+                    e.fatalError(err);
+                }
             }
             else {
-                e.fatalError(err);
-            }
-        }
-        else {
-            const enwikiCatsPropertySeparator = ';';
-            const enwikiCatsPropertyElemsSeparator = ' ';
-            const enwikiCats = [];
-            const enwikiCatsLines = data.split('\n')
-                                        .filter(Boolean);  // to ignore empty lines
+                const enwikiCatsPropertySeparator = ';';
+                const enwikiCatsPropertyElemsSeparator = ' ';
+                const enwikiCats = [];
 
-            if (enwikiCatsLines === null) {
-                e.fatalError (`Error while reading enwiki categories file '${enwikiCatsFile}`);
-            }
+                /* Ignore empty lines in the data for sanity */
+                const enwikiCatsLines = data.split('\n')
+                                            .filter(Boolean);
 
-            if (enwikiCatsLines.length === 0) {
-                e.fatalError (`Could not get any categories from the enwiki categories file '${enwikiCatsFile}'`);
-            }
+                if (enwikiCatsLines === null) {
+                    e.fatalError (`No lines found in '${enwikiCatsFile}`);
+                }
 
-            enwikiCatsLines.forEach(function enwikiCatsGenerator (line) {
-                const properties = line.split(enwikiCatsPropertySeparator);
-                enwikiCats.push({
-                    id: properties[0],
-                    elems: properties[1].split(enwikiCatsPropertyElemsSeparator)
+                if (enwikiCatsLines.length === 0) {
+                    e.fatalError (`No categories found in '${enwikiCatsFile}'`);
+                }
+
+                enwikiCatsLines.forEach(function enwikiCatsGenerator (line) {
+                    const properties = line.split(enwikiCatsPropertySeparator);
+                    enwikiCats.push(
+                        {
+                            id: properties[0],
+                            elems: properties[1]
+                                        .split(enwikiCatsPropertyElemsSeparator)
+                        }
+                    );
                 });
-            });
 
-            console.log(`Successfully read ${enwikiCats.length} categories.`);
+                console.log(`Read ${enwikiCats.length} categories.`);
 
-            callback(enwikiCats);
+                callback(enwikiCats);
+            }
         }
-    });
+    );
 };
 
 /**
@@ -122,7 +137,7 @@ const getRelevantCats = function (userQuery, enwikiCats) {
         });
     }
 
-    console.log (`Found ${relevantCatsId.length} categories for the user query '${userQuery}'`);
+    console.log (`Found ${relevantCatsId.length} relevant categories`);
     return relevantCatsId;
 }
 
@@ -133,16 +148,20 @@ const getRelevantCats = function (userQuery, enwikiCats) {
  * given user query string and call the concerned callback after succcessfully
  * generating the list.
  */
-const generateCategoryList = function (userQuery, enwikiCatsFile, categoriesCallback) {
-    readEnwikiCats(enwikiCatsFile, function readCompleteCallback (enwikiCats) {
-        const relevantCatsId = getRelevantCats (userQuery, enwikiCats);
+const generateCategoryList =
+    function (userQuery, enwikiCatsFile, categoriesCallback) {
+        readEnwikiCats(
+            enwikiCatsFile,
+            function readCompleteCallback (enwikiCats) {
+                const relevantCatsId = getRelevantCats (userQuery, enwikiCats);
 
-        if (relevantCatsId.length === 0) {
-            e.fatalError ('Could not find any relevant categories for the given query');
-        }
+                if (relevantCatsId.length === 0) {
+                    e.fatalError ('Could not find any relevant categories');
+                }
 
-        categoriesCallback (relevantCatsId);
-    });
-};
+                categoriesCallback (relevantCatsId);
+            }
+        );
+    };
 
 module.exports.generateCategoryList = generateCategoryList;
