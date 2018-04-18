@@ -56,7 +56,7 @@ function (articleListFile, zimOutputDir, packageOptions, callback) {
              * Get the required 'mwoffliner' configuration that
              * doesn't change often.
              */
-            const parameters = require('../config/package_generator.json');
+            const parameters = require('../config/mwoffliner-config.json');
             parameters.articleList = articleListFile;
             parameters.outputDirectory = zimOutputDir;
             parameters.filenamePrefix = filePrefix;

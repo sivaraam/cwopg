@@ -73,7 +73,7 @@ const generateArticleList = function (categories, articleListFile, callback) {
 exports.generateArticleList = generateArticleList;
 // generateArticleList(
 //     ['Sudoku', 'Bullfighting'],
-//     '../articleList',
+//     '../article-list',
 //     function () {
 //         console.log("Successfully generated article list.");
 //     }
