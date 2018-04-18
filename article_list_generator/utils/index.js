@@ -17,7 +17,7 @@ const petscanUrl = 'https://petscan.wmflabs.org/';
 /*
  * Get the PetScan parameters that don't change often.
  */
-const petscanParams = require('../config/article-list-generator.json');
+const petscanParams = require('../config/petscan-config.json');
 
 const findTypcialCategoriesPerRequest = function () {
     const testCategory =
