@@ -12,23 +12,23 @@
 const request = require('request');
 const e = require('../../lib/error.js');
 
-const petscan_url = 'https://petscan.wmflabs.org/';
+const petscanUrl = 'https://petscan.wmflabs.org/';
 
 /*
  * Get the PetScan parameters that don't change often.
  */
-const petscan_params = require('../config/article_list_generator.json');
+const petscanParams = require('../config/article-list-generator.json');
 
-const find_typcial_categories_per_request = function () {
-    const test_category = 'National_members_of_the_Confederation_of_Chess_for_America';
-    var known_good = 125;
-    var known_bad = 140;
+const findTypcialCategoriesPerRequest = function () {
+    const testCategory = 'National_members_of_the_Confederation_of_Chess_for_America';
+    var knownGood = 125;
+    var knownBad = 140;
 
-    const request_petscan = function () {
-        var mid = Math.floor((known_bad+known_good)/2);
+    const requestPetscan = function () {
+        var mid = Math.floor((knownBad+knownGood)/2);
         const cats = new Array(mid);
-        cats.fill(test_category);
-        petscan_params.categories=cats.join('\n');
+        cats.fill(testCategory);
+        petscanParams.categories=cats.join('\n');
 
         console.log(`Requesting the article list for ${mid} categories.`);
 
@@ -37,36 +37,36 @@ const find_typcial_categories_per_request = function () {
          * set of categories.
          */
         request.get({
-            url: petscan_url,
-            qs: petscan_params
+            url: petscanUrl,
+            qs: petscanParams
         }, function (error, response, body) {
             if (error != null) {
-                e.fatal_error(`error: ${error}`);
+                e.fatalError(`error: ${error}`);
             }
             if (response && response.statusCode === 200) {
                 console.log ('log: PetScan request succeeded');
-                if (known_bad!=known_good) {
-                    known_good=mid+1;
-                    request_petscan();
+                if (knownBad!=knownGood) {
+                    knownGood=mid+1;
+                    requestPetscan();
                 }
             } else if (!response) {
-                e.fatal_error('No response received from PetScan!');
+                e.fatalError('No response received from PetScan!');
             } else {
                 if (response.statusCode === 414) {
                     console.log ('log: PetScan request failed');
-                    if (known_bad!=known_good) {
-                        known_bad=mid-1;
-                        request_petscan();
+                    if (knownBad!=knownGood) {
+                        knownBad=mid;
+                        requestPetscan();
                     }
                 }
                 else {
-                    e.fatal_error(`PetScan request failed with status code: ${response.statusCode}\n${response.body}`);
+                    e.fatalError(`PetScan request failed with status code: ${response.statusCode}\n${response.body}`);
                 }
             }
         });
     }
 
-    request_petscan();
+    requestPetscan();
 };
 
-find_typcial_categories_per_request();
+findTypcialCategoriesPerRequest();

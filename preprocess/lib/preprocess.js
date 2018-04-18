@@ -10,16 +10,16 @@ const stemmer = require ('stemmer');
  * that could that represent searchable elements of the string.
  */
 const preprocess = function (string) {
-    const separator_re =  /[\s;,\.\(\)_]+/;
-    const searchable_elems = string.trim()
-                       .toLowerCase()
-                       .split(separator_re);
+    const separatorRE =  /[\s;,\.\(\)_]+/;
+    const searchableElems = string.trim()
+                                  .toLowerCase()
+                                  .split(separatorRE);
 
-    searchable_elems.forEach(function (elem) {
+    searchableElems.forEach(function (elem) {
         elem = stemmer (elem);
     });
 
-    return searchable_elems;
+    return searchableElems;
 };
 
 module.exports = preprocess;

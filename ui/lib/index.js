@@ -1,13 +1,13 @@
 'use strict'
 
 const express = require ('express');
-const body_parser = require('body-parser');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const package_generator_orchestrator = require('../..');
+const packageGeneratorOrchestrator = require('../..');
 const path = require ('path');
 const app = express();
 const port = 3000;
-const file_path_cookie_id = 'cwopgZimFilePath';
+const filePathCookieId = 'cwopg-zim-file-path';
 
 app.use( express.static( path.join(__dirname, '../static') ) );
 
@@ -16,7 +16,7 @@ app.use( express.static( path.join(__dirname, '../static') ) );
  * and exposes the resulting object (containing the keys and values) on req.body
  */
 app.use(
-  body_parser.urlencoded({
+  bodyParser.urlencoded({
     extended: true
   })
 );
@@ -24,7 +24,7 @@ app.use(
 /**bodyParser.json(options)
  * Parses the text as JSON and exposes the resulting object on req.body.
  */
-app.use(body_parser.json());
+app.use(bodyParser.json());
 
 app.use(cookieParser());
 
@@ -43,43 +43,43 @@ app.get ('/', function (request, response) {
 
 app.post ('/generate-package', function (request, response) {
     const params = {
-        user_query: request.body.keywords,
+        userQuery: request.body.keywords,
         nopic: request.body.nopic !== undefined,
         novid: request.body.novid !== undefined
     }
 
-    const package_callback = function (output_file) {
-        response.cookie(file_path_cookie_id, output_file, { httpOnly: true });
-        response.set('Cache-Control', 'max-age=60, must-revalidate');
-        response.set('Content-Type', 'text/plain');
+    const packageCallback = function (outputFile) {
+        response.cookie(filePathCookieId, outputFile, { httpOnly: true });
+        response.set('CacheControl', 'max-age=60, must-revalidate');
+        response.set('ContentType', 'text/plain');
         response.status(200).send('Success!');
     };
 
     /* Generate the offline package for the obtained keywords */
-    package_generator_orchestrator.generate_package (params,
-                                                     package_callback);
+    packageGeneratorOrchestrator.generatePackage (params,
+                                                 packageCallback);
 });
 
 app.get ('/download-package', function (request, response) {
-    const download_options = {
+    const downloadOptions = {
         dotfiles: 'deny',
         headers: {
             'x-timestamp': Date.now(),
             'x-sent': true
         }
     };
-    const file_name = 'custom-enwiki-package.zim';
+    const fileName = 'custom-enwiki-package.zim';
 
-    if (request.cookies[file_path_cookie_id])
+    if (request.cookies[filePathCookieId])
     {
-        const file_path = request.cookies[file_path_cookie_id];
+        const filePath = request.cookies[filePathCookieId];
 
-        response.cookie(file_path_cookie_id, '');
-        response.download (file_path, file_name, download_options, function (err) {
+        response.cookie(filePathCookieId, '');
+        response.download (filePath, fileName, downloadOptions, function (err) {
             if (err) {
                 console.log (err);
             } else {
-                console.log ('Sent:', file_name);
+                console.log ('Sent:', fileName);
             }
         });
     }
@@ -105,7 +105,7 @@ const server = app.listen (port, function (err) {
  * response. Thus the application reeived another request before the previous
  * was completed.
  *
- * Temporarily stop-gap the issue by turning off timeouts in the incoming
+ * Temporarily stopGap the issue by turning off timeouts in the incoming
  * connections.
  */
 server.setTimeout(0);
