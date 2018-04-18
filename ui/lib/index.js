@@ -16,8 +16,10 @@ const cookieParser = require('cookie-parser');
 const packageGeneratorOrchestrator = require('../..');
 const path = require ('path');
 const app = express();
-const port = 3000;
-const filePathCookieId = 'cwopg-zim-file-path';
+
+/* Store constant settings in the app itself */
+app.set('port', 3000);
+app.set('filePathCookieId', 'cwopg-zim-file-path');
 
 app.use( express.static( path.join(__dirname, '../static') ) );
 
@@ -66,9 +68,13 @@ app.post ('/generate-package', function (request, response) {
          *
          * #security
          */
-        response.cookie(filePathCookieId, outputFile, { httpOnly: true });
-        response.set('CacheControl', 'max-age=60, must-revalidate');
-        response.set('ContentType', 'text/plain');
+        response.cookie(
+            app.get('filePathCookieId'),
+            output_file,
+            { httpOnly: true }
+        );
+        response.set('Cache-Control', 'max-age=60, must-revalidate');
+        response.set('Content-Type', 'text/plain');
         response.status(200).send('Success!');
     };
 
@@ -86,12 +92,13 @@ app.get ('/download-package', function (request, response) {
         }
     };
     const fileName = 'custom-enwiki-package.zim';
+    const cookieId = app.get('filePathCookieId');
 
-    if (request.cookies[filePathCookieId])
+    if (request.cookies[cookieId])
     {
-        const filePath = request.cookies[filePathCookieId];
+        const filePath = request.cookies[cookieId];
 
-        response.cookie(filePathCookieId, '');
+        response.cookie(cookieId, '');
         response.download (filePath, fileName, downloadOptions, function (err) {
             if (err) {
                 console.log (err);
@@ -102,12 +109,12 @@ app.get ('/download-package', function (request, response) {
     }
 });
 
-const server = app.listen (port, function (err) {
+const server = app.listen (app.get('port'), function (err) {
     if (err) {
         return console.error("Something bad happened!", err);
     }
 
-    console.log (`Server is listening on port ${port}`);
+    console.log (`Server is listening on port ${app.get('port')}`);
 });
 
 /*
