@@ -10,7 +10,7 @@ const preprocess = require('../../preprocess');
 const e = require('../../lib/error');
 
 const readEnwikiCatsFile = function (enwikiCatsFile, callback) {
-    const readOptions = { encoding: 'utf8' };
+    const readOptions = { encoding: 'utf-8' };
 
     fs.readFile(
         enwikiCatsFile,
@@ -51,9 +51,17 @@ const preprocessEnwikiCatsFile =
         readEnwikiCatsFile(
             enwikiCatsFile,
             function readCompleteCallback (enwikiCatsArr) {
-                const enwikiCatsPreprocessed = [];
                 const writeOptions = { encoding: 'utf-8' };
-                var enwikiCatsWriteStream = null;
+                const enwikiCatsPreprocessed = [];
+
+                /*
+                 * Write stream to write back the preprocessed output
+                 * to the destination
+                 */
+                let enwikiCatsWriteStream = fs.createWriteStream(
+                    preprocessedEnwikiCatsFile,
+                    writeOptions
+                );
 
                 if (enwikiCatsArr === null) {
                     e.fatalError('Invalid parameter for enwiki cats file');
@@ -66,29 +74,24 @@ const preprocessEnwikiCatsFile =
                 /*
                  * Preprocess the categories
                  */
-                enwikiCatsArr.forEach (function (cat) {
-                    enwikiCatsPreprocessed.push(preprocess (cat).join(' '));
-                });
-
-                /*
-                 * Write back the preprocessed output to destination
-                 */
-                enwikiCatsWriteStream =
-                    fs.createWriteStream(
-                        preprocessedEnwikiCatsFile,
-                        writeOptions
-                    );
-
-                    for (var i=0; i<enwikiCatsArr.length; i++) {
-                        enwikiCatsWriteStream.write(
-                            enwikiCatsArr[i] + ';' +
-                            enwikiCatsPreprocessed[i] + '\n'
+                enwikiCatsArr.forEach(
+                    function (cat) {
+                        enwikiCatsPreprocessed.push(
+                            preprocess(cat).join(' ')
                         );
                     }
+                );
 
-                    console.log (
-                        'Successfully preprocessed the category list file.'
+                for (let i=0; i<enwikiCatsArr.length; i++) {
+                    enwikiCatsWriteStream.write(
+                        enwikiCatsArr[i] + ';' +
+                        enwikiCatsPreprocessed[i] + '\n'
                     );
+                }
+
+                console.log(
+                    'Successfully preprocessed the category list file.'
+                );
             }
         );
     };

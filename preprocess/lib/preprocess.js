@@ -21,9 +21,11 @@ const preprocess = function (string) {
                                   .toLowerCase()
                                   .split(separatorRE);
 
-    searchableElems.forEach(function (elem) {
-        elem = stemmer (elem);
-    });
+    searchableElems.forEach(
+        function (elem) {
+            elem = stemmer(elem);
+        }
+    );
 
     return searchableElems;
 };

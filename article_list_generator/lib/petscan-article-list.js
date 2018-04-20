@@ -8,15 +8,14 @@
  * and it's response.
  */
 const request = require('request');
-const e = require('../../lib/error.js');
-
-const petscanUrl = 'https://petscan.wmflabs.org/';
-const articles = [];
+const e = require('../../lib/error');
 
 /**
- * Get the PetScan parameters that don't change often.
- */
-const petscanParams = require('../config/petscan-config.json');
+* Get the PetScan parameters that don't change often.
+*/
+const petscanParams = require('../config/petscan-config');
+const petscanUrl = 'https://petscan.wmflabs.org/';
+const articles = [];
 
 /**
  * Generates the article list from the PetScan's response which is given in as
@@ -30,9 +29,11 @@ const appendArticleListFromPetscanRes = function (petscanJsonResponse) {
         e.fatalError('Failed to fetch article list from PetScan response');
     }
 
-    articlesObject.forEach (function articleListGen (articleObj) {
-        articles.push(articleObj.title);
-    });
+    articlesObject.forEach(
+        function articleListGen (articleObj) {
+            articles.push(articleObj.title);
+        }
+    );
 };
 
 /**
@@ -65,7 +66,7 @@ const generateArticleListForCategorySplit =
 
                     index++;
                     if (index === categorySplits.length) {
-                        callback (articles);
+                        callback(articles);
                     }
                     else {
                         generateArticleListForCategorySplit(
@@ -84,7 +85,7 @@ const generateArticleListForCategorySplit =
                 }
             }
         );
-    }
+    };
 
 /**
  *  Generate the article list file by identifying the set of articles in the
@@ -97,7 +98,7 @@ const generateArticleList = function (categories, callback) {
                         Math.ceil(categories.length / heuristicPerRequestCats);
     const categorySplits = [];
 
-    for (var split=0; split<totalCategorySplits; split++) {
+    for (let split=0; split<totalCategorySplits; split++) {
         categorySplits.push(
             categories.slice(
                 split * heuristicPerRequestCats,
@@ -106,7 +107,7 @@ const generateArticleList = function (categories, callback) {
         );
     }
 
-     generateArticleListForCategorySplit(categorySplits, 0, callback);
+    generateArticleListForCategorySplit(categorySplits, 0, callback);
 };
 
 exports.generateArticleList = generateArticleList;

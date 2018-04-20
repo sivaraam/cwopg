@@ -6,7 +6,7 @@
  */
 
 const fs = require('fs');
-const e = require('../../lib/error.js');
+const e = require('../../lib/error');
 const preprocess = require('../../preprocess');
 
 /**
@@ -26,6 +26,7 @@ const preprocess = require('../../preprocess');
  */
 const readEnwikiCats = function (enwikiCatsFile, callback) {
     const readOptions = { encoding: 'utf-8' };
+
     console.log(
         'About to read the enwiki category list file:',
         enwikiCatsFile
@@ -47,8 +48,6 @@ const readEnwikiCats = function (enwikiCatsFile, callback) {
                 }
             }
             else {
-                const enwikiCatsPropertySeparator = ';';
-                const enwikiCatsPropertyElemsSeparator = ' ';
                 const enwikiCats = [];
 
                 /* Ignore empty lines in the data for sanity */
@@ -56,23 +55,29 @@ const readEnwikiCats = function (enwikiCatsFile, callback) {
                                             .filter(Boolean);
 
                 if (enwikiCatsLines === null) {
-                    e.fatalError (`No lines found in '${enwikiCatsFile}`);
+                    e.fatalError(`No lines found in '${enwikiCatsFile}`);
                 }
 
                 if (enwikiCatsLines.length === 0) {
-                    e.fatalError (`No categories found in '${enwikiCatsFile}'`);
+                    e.fatalError(`No categories found in '${enwikiCatsFile}'`);
                 }
 
-                enwikiCatsLines.forEach(function enwikiCatsGenerator (line) {
-                    const properties = line.split(enwikiCatsPropertySeparator);
-                    enwikiCats.push(
-                        {
-                            id: properties[0],
-                            elems: properties[1]
+                enwikiCatsLines.forEach(
+                    function enwikiCatsGenerator (line) {
+                        const enwikiCatsPropertySeparator = ';';
+                        const enwikiCatsPropertyElemsSeparator = ' ';
+                        const properties =
+                                    line.split(enwikiCatsPropertySeparator);
+
+                        enwikiCats.push(
+                            {
+                                id: properties[0],
+                                elems: properties[1]
                                         .split(enwikiCatsPropertyElemsSeparator)
-                        }
-                    );
-                });
+                            }
+                        );
+                    }
+                );
 
                 console.log(`Read ${enwikiCats.length} categories.`);
 
@@ -90,16 +95,18 @@ const readEnwikiCats = function (enwikiCatsFile, callback) {
  * a keyword.
  */
 const isCatRelevant = function (catElems, keywordElems) {
-    var relevant = true;
+    let relevant = true;
 
-    keywordElems.forEach (function (keywordElem) {
-        if (!catElems.includes(keywordElem)) {
-            relevant = false;
+    keywordElems.forEach(
+        function (keywordElem) {
+            if (!catElems.includes(keywordElem)) {
+                relevant = false;
+            }
         }
-    });
+    );
 
     return relevant;
-}
+};
 
 /**
  * Finds a list of relevant categories from the given set of enwiki categories
@@ -115,31 +122,35 @@ const getRelevantCats = function (userQuery, enwikiCats) {
     const emptyElemsRemover = function (elem, index, array) {
         return array[index].length !== 0;
     };
-    const relevantCatsId = [];
     const keywords = userQuery.trim()
-                               .split(/\s*,\s*/)
-                               .filter(emptyElemsRemover);
+                              .split(/\s*,\s*/)
+                              .filter(emptyElemsRemover);
     const keywordsElems = [];
+    const relevantCatsId = [];
 
     /**
      * Preprocess each keyword to generate a list of searchable elements
      * representing it.
      */
-    keywords.forEach(function preprocesKeyword(keyword) {
-        keywordsElems.push(preprocess(keyword));
-    });
+    keywords.forEach(
+        function preprocesKeyword (keyword) {
+            keywordsElems.push(preprocess(keyword));
+        }
+    );
 
-    for (var i=0; i < enwikiCats.length; i++) {
-        keywordsElems.forEach(function isKeywordRelevant(keywordElems){
-            if (isCatRelevant (enwikiCats[i].elems, keywordElems)) {
-                relevantCatsId.push (enwikiCats[i].id);
+    for (let i=0; i < enwikiCats.length; i++) {
+        keywordsElems.forEach(
+            function isKeywordRelevant (keywordElems) {
+                if (isCatRelevant(enwikiCats[i].elems, keywordElems)) {
+                    relevantCatsId.push(enwikiCats[i].id);
+                }
             }
-        });
+        );
     }
 
     console.log (`Found ${relevantCatsId.length} relevant categories`);
     return relevantCatsId;
-}
+};
 
 /**
  * @userQuery: CommaSeparated list of keywords
@@ -153,13 +164,13 @@ const generateCategoryList =
         readEnwikiCats(
             enwikiCatsFile,
             function readCompleteCallback (enwikiCats) {
-                const relevantCatsId = getRelevantCats (userQuery, enwikiCats);
+                const relevantCatsId = getRelevantCats(userQuery, enwikiCats);
 
                 if (relevantCatsId.length === 0) {
-                    e.fatalError ('Could not find any relevant categories');
+                    e.fatalError('Could not find any relevant categories');
                 }
 
-                categoriesCallback (relevantCatsId);
+                categoriesCallback(relevantCatsId);
             }
         );
     };

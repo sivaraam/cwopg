@@ -10,23 +10,23 @@
  * and it's response.
  */
 const request = require('request');
-const e = require('../../lib/error.js');
+const e = require('../../lib/error');
 
 const petscanUrl = 'https://petscan.wmflabs.org/';
 
 /*
  * Get the PetScan parameters that don't change often.
  */
-const petscanParams = require('../config/petscan-config.json');
+const petscanParams = require('../config/petscan-config');
 
 const findTypcialCategoriesPerRequest = function () {
     const testCategory =
                 'National_members_of_the_Confederation_of_Chess_for_America';
-    var knownGood = 125;
-    var knownBad = 140;
+    let knownGood = 125;
+    let knownBad = 140;
 
     const requestPetscan = function () {
-        var mid = Math.floor((knownBad+knownGood)/2);
+        let mid = Math.floor( (knownBad + knownGood) / 2 );
         const cats = new Array(mid);
         cats.fill(testCategory);
         petscanParams.categories=cats.join('\n');
@@ -47,32 +47,31 @@ const findTypcialCategoriesPerRequest = function () {
                     e.fatalError(`error: ${error}`);
                 }
                 if (response && response.statusCode === 200) {
-                    console.log ('log: PetScan request succeeded');
-                    if (knownBad!=knownGood) {
-                        knownGood=mid+1;
+                    console.log('log: PetScan request succeeded');
+                    if (knownBad != knownGood) {
+                        knownGood = mid+1;
                         requestPetscan();
                     }
                 } else if (!response) {
                     e.fatalError('No response received from PetScan!');
                 } else {
                     if (response.statusCode === 414) {
-                        console.log ('log: PetScan request failed');
-                        if (knownBad!=knownGood) {
-                            knownBad=mid;
+                        console.log('log: PetScan request failed');
+                        if (knownBad != knownGood) {
+                            knownBad = mid;
                             requestPetscan();
                         }
                     }
                     else {
                         e.fatalError(
-
-                             `PetScan request failed with status code: ` +
-                             `${res.statusCode}\n${response.body}`
-                         );
+                            `PetScan request failed with status code: ` +
+                            `${res.statusCode}\n${response.body}`
+                        );
                     }
                 }
             }
         );
-    }
+    };
 
     requestPetscan();
 };

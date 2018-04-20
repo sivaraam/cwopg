@@ -10,11 +10,12 @@
  *
  * This has not been done the right way, yet. See FIXME(s) below.
  */
-const express = require ('express');
+const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const packageGeneratorOrchestrator = require('../..');
-const path = require ('path');
+const packageGeneratorOrchestrator = require('../../');
+const path = require('path');
+
 const app = express();
 
 /* Store constant settings in the app itself */
@@ -29,9 +30,11 @@ app.use( express.static( path.join(__dirname, '../web') ) );
  * (containing the keys and values) on req.body
  */
 app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
+    bodyParser.urlencoded(
+        {
+            extended: true
+        }
+    )
 );
 
 /*
@@ -41,81 +44,103 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-app.get ('/', function (request, response) {
-    console.log (request.url);
+app.get(
+    '/',
+    function (request, response) {
+        console.log(request.url);
 
-    response.render ('index.html', function (err, html) {
-        if (err) {
-            console.log (err);
-        } else {
-            response.send (html);
-            console.log ('Successfully sent index.');
-        }
-    })
-});
-
-app.post ('/generate-package', function (request, response) {
-    const params = {
-        userQuery: request.body.keywords,
-        nopic: request.body.nopic !== undefined,
-        novid: request.body.novid !== undefined
-    }
-
-    const packageCallback = function (outputFile) {
-        /*
-         * FIXME: Avoid using the full filesystem as value for the cookie.
-         * May lead to security issues.
-         *
-         * #security
-         */
-        response.cookie(
-            app.get('filePathCookieId'),
-            output_file,
-            { httpOnly: true }
-        );
-        response.set('Cache-Control', 'max-age=60, must-revalidate');
-        response.set('Content-Type', 'text/plain');
-        response.status(200).send('Success!');
-    };
-
-    /* Generate the offline package for the obtained keywords */
-    packageGeneratorOrchestrator.generatePackage (params,
-                                                 packageCallback);
-});
-
-app.get ('/download-package', function (request, response) {
-    const downloadOptions = {
-        dotfiles: 'deny',
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true
-        }
-    };
-    const fileName = 'custom-enwiki-package.zim';
-    const cookieId = app.get('filePathCookieId');
-
-    if (request.cookies[cookieId])
-    {
-        const filePath = request.cookies[cookieId];
-
-        response.clearCookie(cookieId);
-        response.download (filePath, fileName, downloadOptions, function (err) {
-            if (err) {
-                console.log (err);
-            } else {
-                console.log ('Sent:', fileName);
+        response.render(
+            'index.html',
+            function (err, html) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    response.send(html);
+                    console.log('Successfully sent index.');
+                }
             }
-        });
+        );
     }
-});
+);
 
-const server = app.listen (app.get('port'), function (err) {
-    if (err) {
-        return console.error("Something bad happened!", err);
+app.post(
+    '/generate-package',
+    function (request, response) {
+        const params = {
+            userQuery: request.body.keywords,
+            nopic: request.body.nopic !== undefined,
+            novid: request.body.novid !== undefined
+        };
+
+        const packageCallback = function (outputFile) {
+            /*
+             * FIXME: Avoid using the full filesystem as value for the cookie.
+             * May lead to security issues.
+             *
+             * #security
+             */
+            response.cookie(
+                app.get('filePathCookieId'),
+                output_file,
+                { httpOnly: true }
+            );
+            response.set('Cache-Control', 'max-age=60, must-revalidate');
+            response.set('Content-Type', 'text/plain');
+            response.status(200).send('Success!');
+        };
+
+        /* Generate the offline package for the obtained keywords */
+        packageGeneratorOrchestrator.generatePackage(
+            params,
+            packageCallback
+        );
     }
+);
 
-    console.log (`Server is listening on port ${app.get('port')}`);
-});
+app.get(
+    '/download-package',
+    function (request, response) {
+        const downloadOptions = {
+            dotfiles: 'deny',
+            headers: {
+                'x-timestamp': Date.now(),
+                'x-sent': true
+            }
+        };
+        const fileName = 'custom-enwiki-package.zim';
+        const cookieId = app.get('filePathCookieId');
+
+        if (request.cookies[cookieId])
+        {
+            const filePath = request.cookies[cookieId];
+
+            response.clearCookie(cookieId);
+            response.download(
+                filePath,
+                fileName,
+                downloadOptions,
+                function (err) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('Sent:', fileName);
+                    }
+                }
+            );
+        }
+    }
+);
+
+const server = app.listen(
+    app.get('port'),
+    function (err) {
+        if (err) {
+            return console.error("Something bad happened!", err);
+        }
+
+        console.log(`Server is listening on port ${app.get('port')}`);
+    }
+);
 
 /*
  * FIXME: Make the clients poll for completion of package generation thus
