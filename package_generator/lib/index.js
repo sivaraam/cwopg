@@ -131,7 +131,7 @@ const generateZimPackage =
 
 exports.generateZimPackage = generateZimPackage;
 // generateZimPackage(
-//     '../articleList',
+//     '../article-list',
 //     '../public/output',
 //     {},
 //     function zimOpFile(file){
