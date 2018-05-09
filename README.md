@@ -7,7 +7,7 @@ It currently has a few issues which make it require a round-about
 way to make it up and running. Documenting it just for the sake of
 reference. Note that the build process would be made easier.
 
-#### Build:
+### Build
 
 ```
 # Clone the repository
@@ -27,9 +27,9 @@ npm run deploy:sass
 cd .. && node lib/index.js
 ```
 
-#### More tweaking
+### Dependencies
 
-###### Missing category list file:
+#### Category list file
 Currently a file required for the application to run isn't present
 in the repository due to it's huge size. A script to automatically
 generate the file would be introduced in the upcoming days.
@@ -50,14 +50,14 @@ work. Note that you would have to pre-process the file using the
 cd enwiki_cats_preprocessor && node lib/index.js
 ```
 
-###### Unhandled promise
+#### Unhandled promise
 Due to an issue in one of the dependencies (`mwoffliner`), the
 application might not work correctly in newer versions of node.
 There's a fix in the source but it doesn't seems to be published yet.
 See [this issue](https://github.com/openzim/mwoffliner/issues/281)
 for more details and a work-around.
 
-#### Warning
+### Warning
 Currently, the project has only been developed for the English
 Wikipedia. It doesn't support other languages (even if you use a
 category list containing categories of another language Wikipedia
