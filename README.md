@@ -16,7 +16,9 @@ git clone https://github.com/sivaraam/cwopg
 # Run `npm install` in the project root.
 cd cwopg && npm install
 
-cd ui/web
+# Run `npm install` inside the `ui/web` folder
+# This is a little absurd
+cd ui/web && npm install
 
 # Generate the CSS files
 npm run deploy:sass
