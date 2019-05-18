@@ -36,6 +36,14 @@ would need Git LFS installed for the file to be fetched correctly.
 Visit the [Git LFS website](https://git-lfs.github.com) for instructions
 on installing Git LFS.
 
+In case you have already cloned the repository without installing
+Git LFS, run the following command **after installing** Git LFS
+to fix the invalid state in which Git leaves the repo:
+
+```
+git checkout -f HEAD
+```
+
 In case you're wondering, the file contains the list of Wikipedia
 categories one per line.
 
