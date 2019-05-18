@@ -24,6 +24,6 @@
   "homepage": "https://github.com/sivaraam/cwopg#readme",
   "dependencies": {
     "execa": "^0.10.0",
-    "mwoffliner": "^1.3.7"
+    "mwoffliner": ">=1.8.6"
   }
 }
