@@ -30,25 +30,14 @@ cd .. && node lib/index.js
 ### Dependencies
 
 #### Category list file
-Currently a file required for the application to run isn't present
-in the repository due to it's huge size. A script to automatically
-generate the file would be introduced in the upcoming days.
+Currently a file required for the application to run is tracked via
+[Git LFS](https://git-lfs.github.com/) due to its large size. So, you
+would need Git LFS installed for the file to be fetched correctly.
+Visit the [Git LFS website](https://git-lfs.github.com) for instructions
+on installing Git LFS.
 
-In case you're wondering the file contains the list of Wikipedia
-categories one per line. If you create that and place it in the
-project's root directory with the name specified in
-`enwiki-cats-bigger` file then you could possibly make the project
-work. Note that you would have to pre-process the file using the
-`enwiki_cats_preprocessor` module.
-
-```
-# Somehow create the enwiki-cats-bigger file which contains a list
-# of valid Wikipedia category titles
-# Note: without the 'Categories:' prefix
-
-# Preprocess the file
-cd enwiki_cats_preprocessor && node lib/index.js
-```
+In case you're wondering, the file contains the list of Wikipedia
+categories one per line.
 
 #### Unhandled promise
 Due to an issue in one of the dependencies (`mwoffliner`), the
