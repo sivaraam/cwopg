@@ -1,6 +1,6 @@
 ## Customized Wikipedia offline package generator
 
-An ongoing Node.js application that would allow users to download
+A Node.js application that would allow users to download
 custom offline packages of Wikipedia articles.
 
 It currently has a few issues which make it require a round-about
