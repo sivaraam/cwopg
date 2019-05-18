@@ -17,7 +17,7 @@ git clone https://github.com/sivaraam/cwopg
 cd cwopg && npm install
 
 # Run `npm install` inside the `ui/web` folder
-# This is a little absurd
+# This is needed for the styles.
 cd ui/web && npm install
 
 # Generate the CSS files
