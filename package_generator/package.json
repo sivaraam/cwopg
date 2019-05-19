@@ -22,8 +22,11 @@
     "url": "https://github.com/sivaraam/cwopg/issues"
   },
   "homepage": "https://github.com/sivaraam/cwopg#readme",
+
+  "__comment": "WARNING: Think thrice before changing the mwoffliner version. We rely on the output to get file name. It may change when we change versions. See comment in package_generator/lib/index.js",
   "dependencies": {
-    "execa": "^0.10.0",
-    "mwoffliner": ">=1.8.6"
+    "mwoffliner": "=1.8.6",
+
+    "execa": "^0.10.0"
   }
 }
