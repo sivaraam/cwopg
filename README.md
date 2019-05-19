@@ -11,6 +11,8 @@ reference. Note that the build process would be made easier.
 
 ```
 # Clone the repository
+# In case you think of downloading the repository
+# see the 'Note about downloading' section below.
 git clone https://github.com/sivaraam/cwopg
 
 # Run `npm install` in the project root.
@@ -79,3 +81,18 @@ Currently, the project has only been developed for the English
 Wikipedia. It doesn't support other languages (even if you use a
 category list containing categories of another language Wikipedia
 project). It has to be modified to support other language projects.
+
+### Note about downloading
+In case you think of just downloading an archive of this repository,
+let me tell you before hand that a file which the project depends on
+(`enwiki-cats-bigger-preprocessed`) is tracked using Git LFS (due to
+it's large size). As of now, downloading an archive of the repository
+doesn't seem to be including the actual file but instead it just seems
+to be including the place holder file of Git LFS.
+
+So, if you wish to download the archive you would also have to [manually
+download the dependent file](https://github.com/sivaraam/cwopg/blob/master/enwiki-cats-bigger-preprocessed?raw=true).
+
+Alternatively, you don't have to do anything special when cloning the project
+other than having [Git LFS installed](#git-lfs). Git auto-magically takes care of fetching
+the files tracked by Git LFS for you. :sparkles: :tada:
