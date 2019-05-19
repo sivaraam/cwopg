@@ -64,6 +64,16 @@ const generateZimPackage =
                      * doesn't change often.
                      */
                     parameters.articleList = articleListFile;
+
+                    /*
+                     * It seems that newer mwoffliner versions don't
+                     * respect absolute paths for the output directories.
+                     * Ignore it for now as we can live with it for now.
+                     *
+                     * Anyways, see the following PR that tries to fix this:
+                     *
+                     * https://github.com/openzim/mwoffliner/pull/753
+                     */
                     parameters.outputDirectory = zimOutputDir;
                     parameters.filenamePrefix = filePrefix;
                     parameters.format = getMwofflinerFormat(packageOptions);
