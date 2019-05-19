@@ -58,6 +58,7 @@ git checkout -f HEAD
 In case you're wondering, the file contains the list of Wikipedia
 categories one per line.
 
+### Issues
 #### Unhandled promise
 Due to an issue in one of the dependencies (`mwoffliner`), the
 application might not work correctly in newer versions of node.
