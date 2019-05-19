@@ -40,7 +40,7 @@ By default, redis server is assumed to be running at
 'redis://127.0.0.1:6379'. In case there is any change update the
 configuration file found at [package_generator/config/mwoffliner-config.json]().
 
-#### Category list file
+#### Git LFS
 Currently a file required for the application to run is tracked via
 [Git LFS](https://git-lfs.github.com/) due to its large size. So, you
 would need Git LFS installed for the file to be fetched correctly.
