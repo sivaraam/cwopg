@@ -1,7 +1,10 @@
 {
   "mwUrl": "https://en.wikipedia.org/",
   "adminEmail": "kaarticsivaraam91196@gmail.com",
+
+  "__comment": "WARNING: The following verbose flag is very important. We get the path to the ZIM file only from the verbose output. So, don't set it to false or our regex to extract path won't work. See package_generator/lib/index.js",
   "verbose": true,
+
   "minifyHtml": true,
   "redis": "redis://127.0.0.1:6379"
 }

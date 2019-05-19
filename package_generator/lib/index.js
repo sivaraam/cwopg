@@ -71,6 +71,11 @@ const generateZimPackage =
 
                     Object.keys(parameters).forEach(
                         function cmdParamGen (key, index) {
+                            /*
+                             * Ignore the comment which we have added.
+                             */
+                            if (key == '__comment') return;
+
                             npmMwofflinerCmdParams.push(`--${key}`);
                             npmMwofflinerCmdParams.push(parameters[key]);
                         }
