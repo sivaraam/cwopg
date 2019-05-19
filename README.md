@@ -43,15 +43,6 @@ node lib/index.js
 ```
 
 ### Dependencies
-
-#### Redis server
-One of the dependencies of the application [(`mwoffliner`) depends on](https://github.com/openzim/mwoffliner#prerequisites)
-redis-server. So, it has to be installed. Kidnly refer to the
-documentation about installing Redis server from [their website](https://redis.io/topics/quickstart).
-By default, redis server is assumed to be running at
-'redis://127.0.0.1:6379'. In case there is any change update the
-configuration file found at [package_generator/config/mwoffliner-config.json]().
-
 #### Git LFS
 Currently a file required for the application to run is tracked via
 [Git LFS](https://git-lfs.github.com/) due to its large size. So, you
@@ -70,6 +61,13 @@ git checkout -f HEAD
 In case you're wondering, the file contains the list of Wikipedia
 categories one per line.
 
+#### Redis server
+One of the dependencies of the application [(`mwoffliner`) depends on](https://github.com/openzim/mwoffliner#prerequisites)
+redis-server. So, it has to be installed. Kidnly refer to the
+documentation about installing Redis server from [their website](https://redis.io/topics/quickstart).
+By default, redis server is assumed to be running at
+'redis://127.0.0.1:6379'. In case there is any change update the
+configuration file found at [package_generator/config/mwoffliner-config.json]().
 
 ### Issues
 #### Unhandled promise
