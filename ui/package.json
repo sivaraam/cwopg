@@ -6,7 +6,6 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
-    "cwopg-ui-static": "file:web",
     "express": "^4.16.3"
   },
   "devDependencies": {},
