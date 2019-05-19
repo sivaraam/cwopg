@@ -61,6 +61,26 @@ In case you're wondering, the file contains the list of Wikipedia
 categories one per line.
 
 ### Issues
+#### Missing module 'stemmer'
+In case you see an error about a missing module. Do the following:
+
+```
+cd $PROJECT_ROOT # the cwopg directory
+rm -rf node_modules/mwoffliner/
+npm install # This should have fixed the issue
+
+cd ui
+
+# Start the server
+node lib/index.js
+
+# Continue accessing the application
+# in the browser at http://localhost:3000
+```
+
+Due to some odd reason 'npm install' run in the project root directory
+doesn't seem to installing all the dependencies. :man_shrugging:
+
 #### Unhandled promise
 Due to an issue in one of the dependencies (`mwoffliner`), the
 application might not work correctly in newer versions of node.
