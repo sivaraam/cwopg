@@ -81,7 +81,7 @@ app.post(
              */
             response.cookie(
                 app.get('filePathCookieId'),
-                output_file,
+                outputFile,
                 { httpOnly: true }
             );
             response.set('Cache-Control', 'max-age=60, must-revalidate');
