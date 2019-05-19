@@ -9,7 +9,8 @@
     "deploy:sass": "node-sass --source-map true --output-style compressed --include-path ./node_modules -r sass -o css",
     "watch:sass": "node-sass --watch --source-map true --output-style compressed --include-path ./node_modules -r sass -o css",
     "build": "npm run compile:sass",
-    "deploy": "npm run deploy:sass"
+    "deploy": "npm run deploy:sass",
+    "postinstall": "npm run deploy"
   },
   "repository": {
     "type": "git",

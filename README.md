@@ -30,9 +30,6 @@ npm install
 # This is needed for the styles.
 cd ui/web && npm install
 
-# Generate the CSS files
-npm run deploy:sass
-
 cd ..
 
 # Start the server
