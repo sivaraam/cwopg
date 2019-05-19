@@ -25,6 +25,9 @@ npm run deploy:sass
 
 # Start the server
 cd .. && node lib/index.js
+
+# Continue accessing the application
+# in the browser at http://localhost:3000
 ```
 
 ### Dependencies
