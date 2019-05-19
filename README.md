@@ -23,8 +23,10 @@ cd ui/web && npm install
 # Generate the CSS files
 npm run deploy:sass
 
+cd ..
+
 # Start the server
-cd .. && node lib/index.js
+node lib/index.js
 
 # Continue accessing the application
 # in the browser at http://localhost:3000
