@@ -117,16 +117,26 @@ const generateZimPackage =
                              * better way for now.
                              */
                             const outFilePathExtractRE =
-                                            /ZIM file built at (.*\.zim)/;
+                                            /Writing zim to \[(.*\.zim)\]/;
 
-                            /*
-                             * The output file path is at index 1 of the array
-                             * returned by exec().
-                             */
-                            const outFilePath =
-                                    outFilePathExtractRE.exec(result.stdout)[1];
+                            const extractedPaths = outFilePathExtractRE.exec(result.stdout);
 
-                            callback(outFilePath);
+                            if (extractedPaths) {
+                                /*
+                                 * The output file path is at index 1 of the array
+                                 * returned by exec().
+                                 */
+                                const outFilePath =
+                                        outFilePathExtractRE.exec(result.stdout)[1];
+
+                                callback(outFilePath);
+                            }
+                            else {
+                                e.fatalError(
+                                    "We couldn't find the output path to the ZIM file. " +
+                                    "Has the verbose output of mwoffliner changed?"
+                                );
+                            }
                         }
                     );
                 }
