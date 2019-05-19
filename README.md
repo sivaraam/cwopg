@@ -16,6 +16,16 @@ git clone https://github.com/sivaraam/cwopg
 # Run `npm install` in the project root.
 cd cwopg && npm install
 
+# This is needed else npm will complain about the
+# dependency being a Git repository and would
+# error out in hte upcoming install
+rm -rf node_modules/mwoffliner/
+
+# We have to install twice as some dependencies (e.g., stemmer)
+# don't seem to be fetch properly during the first install.
+# For now we work around by installing twice.
+npm install
+
 # Run `npm install` inside the `ui/web` folder
 # This is needed for the styles.
 cd ui/web && npm install
@@ -60,27 +70,8 @@ git checkout -f HEAD
 In case you're wondering, the file contains the list of Wikipedia
 categories one per line.
 
+
 ### Issues
-#### Missing module 'stemmer'
-In case you see an error about a missing module. Do the following:
-
-```
-cd $PROJECT_ROOT # the cwopg directory
-rm -rf node_modules/mwoffliner/
-npm install # This should have fixed the issue
-
-cd ui
-
-# Start the server
-node lib/index.js
-
-# Continue accessing the application
-# in the browser at http://localhost:3000
-```
-
-Due to some odd reason 'npm install' run in the project root directory
-doesn't seem to installing all the dependencies, sometimes. :man_shrugging:
-
 #### Unhandled promise
 Due to an issue in one of the dependencies (`mwoffliner`), the
 application might not work correctly in newer versions of node.
