@@ -79,7 +79,7 @@ node lib/index.js
 ```
 
 Due to some odd reason 'npm install' run in the project root directory
-doesn't seem to installing all the dependencies. :man_shrugging:
+doesn't seem to installing all the dependencies, sometimes. :man_shrugging:
 
 #### Unhandled promise
 Due to an issue in one of the dependencies (`mwoffliner`), the
