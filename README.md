@@ -33,7 +33,7 @@ cd .. && node lib/index.js
 ### Dependencies
 
 #### Redis server
-One of the dependencies of the application (`mwoffliner`) depends on
+One of the dependencies of the application [(`mwoffliner`) depends on](https://github.com/openzim/mwoffliner#prerequisites)
 redis-server. So, it has to be installed. Kidnly refer to the
 documentation about installing Redis server from [their website](https://redis.io/topics/quickstart).
 By default, redis server is assumed to be running at
