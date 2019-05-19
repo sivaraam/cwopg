@@ -64,7 +64,7 @@ redis-server. So, it has to be installed. Kidnly refer to the
 documentation about installing Redis server from [their website](https://redis.io/topics/quickstart).
 By default, redis server is assumed to be running at
 'redis://127.0.0.1:6379'. In case there is any change update the
-configuration file found at [package_generator/config/mwoffliner-config.json]().
+configuration file found at [mwoffliner-config.json](package_generator/config/mwoffliner-config.json).
 
 ### Issues
 #### Unhandled promise
