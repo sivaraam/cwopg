@@ -10,3 +10,7 @@ amounts of time and is not so quick for several reasons such as:
 	- A lot of articles means a lot of time as the articles required
 	  to generate the package are fetched directly from Wikipedia
 	  which results in network delays.
+
+### Possible solutions
+* [Long polling](https://stackoverflow.com/a/5062670/5614968)
+* [HTTP Push](https://blog.risingstack.com/node-js-http-2-push/)
